@@ -1,0 +1,50 @@
+<main class="container">
+  <p>{{titre}}</p>
+
+  <div class="ajouterBtn">
+    <a routerLink="/add"><button class="ajouterBtn" mat-flat-button color="primary">Ajouter Assignment</button></a>
+    </div>
+  
+  <mat-list *ngFor="let assignment of assignments">
+    <nav>
+      <a routerLink="/assignment/{{assignment.id}}">
+        <p mat-subheader>Date de rendu: {{assignment.dateDeRendu | date}}</p>
+        <mat-list-item 
+          [ngClass]="assignment.rendu ? 'rendu' : 'nonRendu'">
+          <p appRendu *ngIf="assignment.rendu">
+            Le devoir <strong>{{assignment.nom}}</strong> a été rendu le 
+            <strong>{{assignment.dateDeRendu | date: 'dd/MM/yyyy' }}</strong>.
+          </p>
+          <p *ngIf="!assignment.rendu">
+            Le devoir <strong>{{assignment.nom}}</strong> doit être rendu le 
+            <strong>{{assignment.dateDeRendu | date: 'dd/MM/yyyy' }}</strong>.
+          </p>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </a>
+    </nav>
+  </mat-list>
+  
+    <div class="pagination"><button mat-button (click)="premierePage()" [disabled]="!hasPrevPage">Première page</button>
+      <button mat-button (click)="pagePrecedente()" [disabled]="!hasPrevPage">Page précédente</button>
+      <span>Page {{page}} sur {{totalePages}}</span>
+      <button mat-button (click)="pageSuivante()" [disabled]="!hasNextPage">Page suivante</button>
+      <button mat-button (click)="dernierePage()" [disabled]="!hasNextPage">Dernière page</button>
+    </div>
+    
+    
+    <div class="info">
+      <p>Nombre total de documents : {{totaleDocs}}</p>
+      <p>Nombre total de pages : {{totalePages}}</p>
+    </div>
+  
+    <mat-paginator [length]="totaleDocs" [pageSize]="limit" [pageSizeOptions]="[5, 10, 20]" (page)="pageChange($event)"></mat-paginator>
+  
+    
+    <mat-divider></mat-divider>
+  
+    <!--<app-assignment-detail [assignmentTransmis]="assignmentSelectionne"></app-assignment-detail>-->
+  </main>
+  <!--
+  <app-add-assignment (nouvelAssignment)="onNouvelAssignment($event)" *ngIf="formVisible"></app-add-assignment>
+  -->

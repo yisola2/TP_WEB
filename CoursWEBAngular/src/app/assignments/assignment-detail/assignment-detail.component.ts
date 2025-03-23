@@ -1,0 +1,76 @@
+import { Component, signal } from '@angular/core';
+import { Assignment } from '../assignment.model';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AssignmentsService } from '../../shared/assignments.service';
+import { MatButtonModule } from '@angular/material/button';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { AuthService } from '../../shared/auth.service';
+
+@Component({
+  selector: 'app-assignment-detail',
+  standalone: true,
+  imports: [CommonModule, MatCardModule, MatCheckboxModule, MatButtonModule],
+  templateUrl: './assignment-detail.component.html',
+  styleUrl: './assignment-detail.component.css'
+})
+export class AssignmentDetailComponent {
+  // Using a signal instead of an input
+  assignmentTransmis = signal<Assignment | null>(null);
+
+  constructor(private assignmentsServises: AssignmentsService, 
+              private authService: AuthService,
+              private route: ActivatedRoute,
+              private router: Router) {}
+
+  ngOnInit(){
+    const id = +this.route.snapshot.params['id'];
+    this.assignmentsServises.getAssignment(id).subscribe(assignment => {
+      // Update the signal value
+      this.assignmentTransmis.set(assignment ?? null);
+    });
+  }
+
+  onClickEdit(){
+    if (this.assignmentTransmis()) {
+      this.router.navigate(["assignment", this.assignmentTransmis()!.id, 'edit'],
+      {queryParams:{name:this.assignmentTransmis()!.name},fragment:'edition'});
+    }
+  }
+
+  onAssignmentRendu(){
+    if (this.assignmentTransmis()) {
+      // Using update to modify the signal value
+      this.assignmentTransmis.update(assignment => {
+        if (assignment) {
+          return {...assignment, submitted: true};
+        }
+        return assignment;
+      });
+      
+      this.assignmentsServises.updateAssignment(this.assignmentTransmis()!).subscribe(reponse => {
+        console.log(reponse.message); 
+        this.router.navigate(["/home"]);
+      });
+    }
+  }
+
+  onAssignmentDelete(){}
+
+  onDelet(){
+    if (this.assignmentTransmis()) {
+      this.assignmentsServises.deleteAssignment(this.assignmentTransmis()!).subscribe((reponse) => {
+        console.log(reponse.message); 
+        this.router.navigate(["/home"]);
+      });
+      this.assignmentTransmis.set(null);
+    }
+  }
+
+  isAdmin(): boolean {
+    const user = this.authService.getCurrentUser();
+    return user?.role === 'admin';
+  }
+}

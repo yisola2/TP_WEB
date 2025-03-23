@@ -1,0 +1,31 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <button mat-button (click)="opened=!opened"><mat-icon>menu</mat-icon>Menu</button>
+        <button mat-button ><mat-icon>home</mat-icon>Home</button>
+        <a routerLink="/login"><button mat-button><mat-icon>login</mat-icon>Connecter</button></a>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<div>
+    <h3 style="color: rgb(242, 90, 115);">
+        <nav><a routerLink="/home">{{title}}</a> </nav>
+    </h3>
+</div>
+
+<!--<button mat-raised-button color="primary" (click)="peuplerBD()">Peupler la base de données</button>-->
+
+
+<mat-sidenav-container>
+    <mat-sidenav [(opened)]="opened" mode="push">
+        <mat-list>
+            <mat-list-item><a mat-button routerLink="/list-devoirs" routerLinkActive="active-link">Liste des devoirs</a></mat-list-item>
+            <mat-list-item><a mat-button routerLink="/ajout-devoir" routerLinkActive="active-link">Ajout d'un devoir</a></mat-list-item>
+            <mat-list-item><a mat-button routerLink="/modification-devoir" routerLinkActive="active-link">Modification d'un devoir</a></mat-list-item>
+            <mat-list-item><a mat-button routerLink="/suppression-devoir" routerLinkActive="active-link">Suppression d'un devoir</a></mat-list-item>
+            <mat-list-item><a mat-button routerLink="/generation-donnees-test" routerLinkActive="active-link">Génération de données de test</a></mat-list-item>
+        </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
