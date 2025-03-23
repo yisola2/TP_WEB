@@ -5,10 +5,10 @@
         <mat-card-content>{{assignmentTransmis()?.assignmentDueDate | date}}</mat-card-content>
         <mat-card-actions id="bottom">
             @if (!assignmentTransmis() && !assignmentTransmis()?.submitted) {
-            <mat-checkbox (click)="onAssignmentRendu()">Devoir rendu</mat-checkbox>
+            <mat-checkbox (click)="onAssignmentRendu()">Assignment submitted</mat-checkbox>
             }
             <button mat-stroked-button color="primary" (click)="onClickEdit()" [disabled]="!isAdmin()">Edit</button>
-            <button mat-flat-button color="primary" (click)="onDelet()" [disabled]="!isAdmin()">Supprimer</button>
+            <button mat-flat-button color="primary" (click)="onDelet()" [disabled]="!isAdmin()">Delete</button>
         </mat-card-actions>
     </mat-card-content>
     }

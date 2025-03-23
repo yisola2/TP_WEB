@@ -61,56 +61,22 @@ export class AssignmentsComponent implements OnInit {
   hasPrevPage!:boolean;
   hasNextPage!:boolean;
 
-  //formVisible = false;
+  formVisible = false;
   titre = 'Assignments List';
   ajoutActive = true;
   assignmentName = "";
   AssignmentDueDate: Date = new Date();
-  //assignmentSelectionne!:Assignment;
+  SelectedAssignment!:Assignment;
   assignments: Assignment[] = [];
 
   constructor (private assignmentsService:AssignmentsService) {}
 
   assignmentDueDate: any;
 
-  premierePage() {
-    this.page = 1;
-    this.ngOnInit();
-  }
   
-  dernierePage() {
-    this.page = this.totalePages;
-    this.ngOnInit();
-  }
-  
-  pagePrecedente() {
-    if (this.hasPrevPage) {
-      this.page -= 1;
-      this.ngOnInit();
-    }
-  }
-  
-  pageSuivante() {
-    if (this.hasNextPage) {
-      this.page += 1;
-      this.ngOnInit();
-    }
-  }
 
   ngOnInit(): void {
-    //this.getAssignment();
-
-    this.assignmentsService.getAssignmentsPagine(this.page, this.limit).subscribe(data => {
-        this.assignments = data.docs;
-        this.page = data.page;
-        this.limit = data.limit;
-        this.totaleDocs = data.totalDocs;
-        this.totalePages = data.totalPages;
-        this.nextPage = data.nextPage;
-        this.prevPage = data.prevPage;
-        this.hasPrevPage = data.hasPrevPage;
-        this.hasNextPage = data.hasNextPage;
-      });
+    this.getAssignment();
     }
 
   getAssignment(){
@@ -118,7 +84,7 @@ export class AssignmentsComponent implements OnInit {
   }
 
 
-  onSubmit(nomAssignment: any){
+  onSubmit(){
     const newAssignment = new Assignment();
     newAssignment.name= this.assignmentName;
     newAssignment.assignmentDueDate = this.assignmentDueDate;
@@ -141,11 +107,5 @@ export class AssignmentsComponent implements OnInit {
     this.formVisible = false;
   }
     */
-
-  pageChange(event: any) {
-    this.page = event.pageIndex + 1; // Angular Material utilise un index 0-based
-    this.limit = event.pageSize;
-    this.ngOnInit();
-  }
   
 }

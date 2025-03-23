@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SubmittedDirective } from  '../../shared/submitted.directive';
 import { Assignment } from '../assignment.model';
@@ -32,28 +32,31 @@ import { AssignmentsService } from '../../shared/assignments.service';
   styleUrl: './add-assignment.component.css'
 })
 export class AddAssignmentComponent {
-  //@Output() nouvelAssignment= new EventEmitter<Assignment>();
   constructor (private assignmentsService: AssignmentsService, private router: Router){}
+  
   assignmentName = "";
   assignmentDate: Date = new Date();
   selectedAssignment!:Assignment;
-  assignmentdueDate: any;
-  assignments = [
-    { name: 'Devoir 1', submitted: true, assignmentdueDate: new Date('2025-02-01') },
-    { name: 'Devoir 2', submitted: false, assignmentdueDate: new Date('2025-02-15') },
-    { name: 'Devoir 3', submitted: true, assignmentdueDate: new Date('2025-02-20') }
-  ];
 
-  onSubmit(nameAssignment: any){
+  onSubmit(nameAssignment: string){
     const newAssignment = new Assignment();
-    newAssignment.id = Math.floor(Math.random()*1000)
-    newAssignment.name = this.assignmentName;
-    newAssignment.assignmentDueDate = this.assignmentdueDate;
+    newAssignment.id = Math.floor(Math.random()*1000);
+    newAssignment.name = nameAssignment; // Use the value passed from the template
+    newAssignment.assignmentDueDate = this.assignmentDate; // Make sure this property matches your Assignment model
     newAssignment.submitted = false;
-    //this.assignments.push(newAssignment);
-    //this.nouvelAssignment.emit(newAssignment);
-    this.assignmentsService.addAssignment(newAssignment).subscribe(message => console.log(message));
-    this.router.navigate(['/home']);
+    
+    console.log('Adding assignment:', newAssignment); // Add this for debugging
+    
+    this.assignmentsService.addAssignment(newAssignment)
+      .subscribe({
+        next: (message) => {
+          console.log('Assignment added successfully:', message);
+          this.router.navigate(['/home']);
+        },
+        error: (error) => {
+          console.error('Error adding assignment:', error);
+        }
+      });
   }
 
   assignmentClique(assignment: Assignment){
