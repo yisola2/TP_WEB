@@ -25,7 +25,7 @@ import { AssignmentsService } from './shared/assignments.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Application de gestion des devoirs à rendre (Assignments)';
+  title = 'Assignment App with Angular';
   opened = false;
 
   constructor(private authService: AuthService, private router: Router, private assignmentsService:AssignmentsService) {}
