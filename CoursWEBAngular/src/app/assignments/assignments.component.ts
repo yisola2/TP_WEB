@@ -28,7 +28,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
   standalone: true,
   imports: [
     CommonModule, 
-    RenduDirective, 
+    SubmittedDirective, 
     FormsModule, 
     MatButtonModule, 
     MatInputModule, 

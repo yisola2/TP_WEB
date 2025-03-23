@@ -1,7 +1,8 @@
 import { Directive, ElementRef } from '@angular/core';
 
 @Directive({
-  selector: '[appSubmitted]'
+  selector: '[appSubmitted]',
+  standalone: true
 })
 export class SubmittedDirective {
 

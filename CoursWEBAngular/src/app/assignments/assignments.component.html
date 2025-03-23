@@ -8,16 +8,16 @@
   <mat-list *ngFor="let assignment of assignments">
     <nav>
       <a routerLink="/assignment/{{assignment.id}}">
-        <p mat-subheader>Date de rendu: {{assignment.dateDeRendu | date}}</p>
+        <p mat-subheader>Date de submitted: {{assignment.assignmentDueDate | date}}</p>
         <mat-list-item 
-          [ngClass]="assignment.rendu ? 'rendu' : 'nonRendu'">
-          <p appRendu *ngIf="assignment.rendu">
-            Le devoir <strong>{{assignment.nom}}</strong> a été rendu le 
-            <strong>{{assignment.dateDeRendu | date: 'dd/MM/yyyy' }}</strong>.
+          [ngClass]="assignment.submitted ? 'submitted' : 'nonsubmitted'">
+          <p appsubmitted *ngIf="assignment.submitted">
+            Le devoir <strong>{{assignment.name}}</strong> a été submitted le 
+            <strong>{{assignment.assignmentDueDate | date: 'dd/MM/yyyy' }}</strong>.
           </p>
-          <p *ngIf="!assignment.rendu">
-            Le devoir <strong>{{assignment.nom}}</strong> doit être rendu le 
-            <strong>{{assignment.dateDeRendu | date: 'dd/MM/yyyy' }}</strong>.
+          <p *ngIf="!assignment.submitted">
+            Le devoir <strong>{{assignment.name}}</strong> doit être submitted le 
+            <strong>{{assignment.assignmentDueDate | date: 'dd/MM/yyyy' }}</strong>.
           </p>
         </mat-list-item>
         <mat-divider></mat-divider>
@@ -34,8 +34,8 @@
     
     
     <div class="info">
-      <p>Nombre total de documents : {{totaleDocs}}</p>
-      <p>Nombre total de pages : {{totalePages}}</p>
+      <p>namebre total de documents : {{totaleDocs}}</p>
+      <p>namebre total de pages : {{totalePages}}</p>
     </div>
   
     <mat-paginator [length]="totaleDocs" [pageSize]="limit" [pageSizeOptions]="[5, 10, 20]" (page)="pageChange($event)"></mat-paginator>
