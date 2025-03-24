@@ -6,7 +6,7 @@
  
   @for (assignment of assignments; track assignment.id) {
     <nav>
-      <a routerLink="/assignment/{{assignment.id}}">
+      <a [routerLink]="['/assignment', assignment.id]">
         <p mat-subheader>Posted on: {{assignment.postedOn| date: 'dd/MM/yyyy'}}</p>
         <mat-list-item
           [ngClass]="assignment.submitted ? 'submitted' : 'nonsubmitted'">

@@ -55,9 +55,15 @@ export class AssignmentDetailComponent implements OnInit {
         return assignment;
       });
       
-      this.assignmentsServises.updateAssignment(this.assignmentTransmis()!).subscribe(reponse => {
-        console.log(reponse.message); 
-        this.router.navigate(["/home"]);
+    this.assignmentsServises.updateAssignment(this.assignmentTransmis()!)
+      .subscribe({
+        next: (response) => {
+          console.log('Assignment marked as submitted:', response);
+          this.router.navigate(['/home']);
+        },
+        error: (error) => {
+          console.error('Error updating assignment:', error);
+        }
       });
     }
   }

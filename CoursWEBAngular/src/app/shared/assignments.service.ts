@@ -34,10 +34,19 @@ export class AssignmentsService {
   }
 
   updateAssignment(assignment: Assignment): Observable<any> {
+    console.log('Updating assignment with ID:', assignment.id);
+    
+    // Find the assignment to update
     const index = this.assignments.findIndex(a => a.id === assignment.id);
+    
     if (index !== -1) {
-      this.assignments[index] = assignment;
+      // Create a NEW object to avoid reference issues
+      this.assignments[index] = {...assignment};
+      console.log('Assignment updated locally:', this.assignments[index]);
+    } else {
+      console.warn('Assignment not found with ID:', assignment.id);
     }
+    
     return of({message: 'Assignment modifié'});
   }
 

@@ -47,6 +47,9 @@ export class AddAssignmentComponent {
     newAssignment.submitted = false;
     
     console.log('Adding assignment:', newAssignment); // Add this for debugging
+    console.log('Due date:', newAssignment.assignmentDueDate);
+    console.log('Posted date:', newAssignment.postedOn);
+    console.log('Id:', newAssignment.id);
     
     this.assignmentsService.addAssignment(newAssignment)
       .subscribe({
