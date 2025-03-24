@@ -6,8 +6,8 @@ import { Injectable } from '@angular/core';
 export class AuthService {
 
   private users = [
-    { login: 'admin', password: 'admin123', role: 'admin' },
-    { login: 'user', password: 'user123', role: 'user' }
+    { login: 'admin', password: 'azerty', role: 'admin' },
+    { login: 'user', password: 'azerty', role: 'user' }
   ];
 
   private currentUser: any = null;

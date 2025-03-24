@@ -26,12 +26,15 @@ export class AssignmentsService {
   }
 
   addAssignment(assignment: Assignment): Observable<any> {
-    // Assign a new id (max id + 1)
-    assignment.id = Math.max(...this.assignments.map(a => a.id)) + 1;
+    if (!Number.isFinite(assignment.id)) {
+      assignment.id = this.assignments.length > 0
+        ? Math.max(...this.assignments.map(a => a.id)) + 1
+        : 1; // fallback safe
+    }
     this.assignments.push(assignment);
     this.loggingService.log(assignment.name, "ajouté");
     return of({message: 'Assignment ajouté'});
-  }
+}
 
   updateAssignment(assignment: Assignment): Observable<any> {
     console.log('Updating assignment with ID:', assignment.id);

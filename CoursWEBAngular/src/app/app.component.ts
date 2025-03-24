@@ -30,7 +30,4 @@ export class AppComponent {
 
   constructor(private authService: AuthService, private router: Router, private assignmentsService:AssignmentsService) {}
 
-  /*peuplerBD() {
-    this.assignmentsService.peuplerBD();
-  }*/
 }

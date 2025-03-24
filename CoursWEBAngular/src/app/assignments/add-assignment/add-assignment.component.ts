@@ -39,22 +39,19 @@ export class AddAssignmentComponent {
   selectedAssignment!:Assignment;
 
   onSubmit(){
+    const generatedId = Math.floor(Math.random() * 1000000);
+
     const newAssignment = new Assignment();
-    newAssignment.id = Math.floor(Math.random()*1000);
+
+    newAssignment.id = generatedId;
     newAssignment.name = this.assignmentName; 
     newAssignment.assignmentDueDate = this.assignmentDate; 
     newAssignment.postedOn = new Date();
     newAssignment.submitted = false;
     
-    console.log('Adding assignment:', newAssignment); // Add this for debugging
-    console.log('Due date:', newAssignment.assignmentDueDate);
-    console.log('Posted date:', newAssignment.postedOn);
-    console.log('Id:', newAssignment.id);
-    
     this.assignmentsService.addAssignment(newAssignment)
       .subscribe({
         next: (message) => {
-          console.log('Assignment added successfully:', message);
           this.router.navigate(['/home']);
         },
         error: (error) => {

@@ -30,10 +30,13 @@ export class AssignmentDetailComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router) {}
 
-  ngOnInit(){
+  ngOnInit() {
+    this.getAssignment();
+  }
+  
+  private getAssignment() {
     const id = +this.route.snapshot.params['id'];
     this.assignmentsServises.getAssignment(id).subscribe(assignment => {
-      // Update the signal value
       this.assignmentTransmis.set(assignment ?? null);
     });
   }

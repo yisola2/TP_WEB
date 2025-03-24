@@ -64,26 +64,32 @@ export class AssignmentsComponent implements OnInit {
 
   assignmentDueDate: any;
 
-  
-  getAssignment(){
-    this.assignmentsService.getAssignments().subscribe(assignments => this.assignments = assignments);
-  }
-  
   ngOnInit(): void {
     this.getAssignment();
-    }
+  }
+  
+  getAssignment() {
+    this.assignmentsService.getAssignments().subscribe(assignments => {
+      this.assignments = assignments;
+    });
+  }
+  
+  
+  
 
-  onSubmit(){
+  /*onSubmit(){
     const newAssignment = new Assignment();
-    newAssignment.id = Math.floor(Math.random()*1000);
+
+    const randomId = Math.floor(Math.random() * 1000000);
+    newAssignment.id = randomId;
 
     newAssignment.name= this.assignmentName;
     newAssignment.assignmentDueDate = this.assignmentDueDate;
     newAssignment.submitted = false;
-    
+
     newAssignment.postedOn = this.postedOn;
     this.assignments.push(newAssignment);
-  }
+  }*/
   
   assignmentClick(assignment: Assignment){
     this.SelectedAssignment = {...assignment};
