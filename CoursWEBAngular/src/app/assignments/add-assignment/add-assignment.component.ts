@@ -38,11 +38,12 @@ export class AddAssignmentComponent {
   assignmentDate: Date = new Date();
   selectedAssignment!:Assignment;
 
-  onSubmit(nameAssignment: string){
+  onSubmit(nameAssignment: any){
     const newAssignment = new Assignment();
     newAssignment.id = Math.floor(Math.random()*1000);
-    newAssignment.name = nameAssignment; // Use the value passed from the template
-    newAssignment.assignmentDueDate = this.assignmentDate; // Make sure this property matches your Assignment model
+    newAssignment.name = nameAssignment; 
+    newAssignment.assignmentDueDate = this.assignmentDate; 
+    newAssignment.postedOn = new Date();
     newAssignment.submitted = false;
     
     console.log('Adding assignment:', newAssignment); // Add this for debugging

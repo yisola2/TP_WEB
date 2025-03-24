@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Assignment } from '../assignment.model';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -12,11 +12,16 @@ import { AuthService } from '../../shared/auth.service';
 @Component({
   selector: 'app-assignment-detail',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatCheckboxModule, MatButtonModule],
+  imports: [
+    CommonModule, 
+    MatCardModule, 
+    MatCheckboxModule, 
+    MatButtonModule
+  ],
   templateUrl: './assignment-detail.component.html',
   styleUrl: './assignment-detail.component.css'
 })
-export class AssignmentDetailComponent {
+export class AssignmentDetailComponent implements OnInit {
   // Using a signal instead of an input
   assignmentTransmis = signal<Assignment | null>(null);
 
@@ -57,9 +62,7 @@ export class AssignmentDetailComponent {
     }
   }
 
-  onAssignmentDelete(){}
-
-  onDelet(){
+  onDelete(){
     if (this.assignmentTransmis()) {
       this.assignmentsServises.deleteAssignment(this.assignmentTransmis()!).subscribe((reponse) => {
         console.log(reponse.message); 

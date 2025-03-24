@@ -27,53 +27,42 @@ import { MatPaginatorModule } from '@angular/material/paginator';
   selector: 'app-assignments',
   standalone: true,
   imports: [
-    CommonModule, 
-    SubmittedDirective, 
-    FormsModule, 
-    MatButtonModule, 
-    MatInputModule, 
+    CommonModule,
+    SubmittedDirective,
+    FormsModule,
+    MatButtonModule,
+    MatInputModule,
     MatDatepickerModule,
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatDividerModule, 
-    MatDatepickerModule, 
+    MatFormFieldModule,
+    MatInputModule,
+    MatDividerModule,
+    MatDatepickerModule,
     MatNativeDateModule,
-    MatListModule, 
-    MatListItem, 
-    RouterModule, 
-    RouterLink, 
-    MatSlideToggleModule, 
-    MatPaginatorModule
-  ],
+    MatListModule,
+    MatListItem,
+    RouterModule,
+    RouterLink,
+    MatSlideToggleModule,
+    MatPaginatorModule,
+    AssignmentDetailComponent
+],
   providers: [],
   templateUrl: './assignments.component.html',
   styleUrl: './assignments.component.css'
 })
 export class AssignmentsComponent implements OnInit {
 
-  //Pour gérer la pagination
-  page:number =1;
-  limit:number =10;
-  totaleDocs!:number;
-  totalePages!:number;
-  nextPage!:number;
-  prevPage!:number;
-  hasPrevPage!:boolean;
-  hasNextPage!:boolean;
-
   formVisible = false;
   titre = 'Assignments List';
   ajoutActive = true;
   assignmentName = "";
-  AssignmentDueDate: Date = new Date();
-  SelectedAssignment!:Assignment;
+  postedOn = new Date();
+  SelectedAssignment?: Assignment;
   assignments: Assignment[] = [];
 
   constructor (private assignmentsService:AssignmentsService) {}
 
   assignmentDueDate: any;
-
-  
 
   ngOnInit(): void {
     this.getAssignment();
@@ -89,13 +78,14 @@ export class AssignmentsComponent implements OnInit {
     newAssignment.name= this.assignmentName;
     newAssignment.assignmentDueDate = this.assignmentDueDate;
     newAssignment.submitted = false;
+    newAssignment.postedOn = this.postedOn;
     this.assignments.push(newAssignment);
   }
-  /*
-  assignmentClique(assignment: Assignment){
-    this.assignmentSelectionne = assignment;
+  
+  assignmentClick(assignment: Assignment){
+    this.SelectedAssignment = assignment;
   }
-  */
+  
   /*onAddAssignmentBtnClick() {
     //this.formVisible = true;
   }

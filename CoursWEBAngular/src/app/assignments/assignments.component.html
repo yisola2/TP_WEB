@@ -1,33 +1,36 @@
 <main class="container">
   <p>{{titre}}</p>
-
   <div class="ajouterBtn">
     <a routerLink="/add"><button class="ajouterBtn" mat-flat-button color="primary">Add Assignment</button></a>
-    </div>
-  
-  <mat-list *ngFor="let assignment of assignments">
+  </div>
+ 
+  @for (assignment of assignments; track assignment.id) {
     <nav>
       <a routerLink="/assignment/{{assignment.id}}">
-        <p mat-subheader>Submitted on: {{assignment.assignmentDueDate| date}}</p>
-        <mat-list-item 
+        <p mat-subheader>Posted on: {{assignment.postedOn| date: 'dd/MM/yyyy'}}</p>
+        <mat-list-item
           [ngClass]="assignment.submitted ? 'submitted' : 'nonsubmitted'">
-          <p appsubmitted *ngIf="assignment.submitted">
-          The assignment <strong>{{assignment.name}}</strong> has been submitted on  
-            <strong>{{assignment.assignmentDueDate | date: 'dd/MM/yyyy' }}</strong>.
-          </p>
-          <p *ngIf="!assignment.submitted">
-            The assignment <strong>{{assignment.name}}</strong> has to be submitted by
-            <strong>{{assignment.assignmentDueDate | date: 'dd/MM/yyyy' }}</strong>.
-          </p>
+          @if (assignment.submitted) {
+            <p appsubmitted>
+              The assignment <strong>{{assignment.name}}</strong> has been submitted on  
+              <strong>{{assignment.assignmentDueDate | date: 'dd/MM/yyyy' }}</strong>.
+            </p>
+          } @else {
+            <p>
+              The assignment <strong>{{assignment.name}}</strong> has to be submitted by
+              <strong>{{assignment.assignmentDueDate | date: 'dd/MM/yyyy' }}</strong>.
+            </p>
+          }
         </mat-list-item>
         <mat-divider></mat-divider>
       </a>
     </nav>
-  </mat-list>
-    <mat-divider></mat-divider>
-  
-    <!--<app-assignment-detail [assignmentTransmis]="assignmentSelectionne"></app-assignment-detail>-->
-  </main>
-  <!--
-  <app-add-assignment (nouvelAssignment)="onNouvelAssignment($event)" *ngIf="formVisible"></app-add-assignment>
-  -->
+  }
+
+  @if (assignments.length === 0) {
+    <p>No assignments available.</p>
+  }
+
+  <mat-divider></mat-divider>
+<!--<app-assignment-detail [assignmentTransmis]="SelectedAssignment"></app-assignment-detail>-->
+</main>
