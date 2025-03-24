@@ -21,6 +21,7 @@ import { RouterLink } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { NotSubmittedDirective } from '../shared/not-submitted.directive';
 
 
 @Component({
@@ -29,6 +30,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
   imports: [
     CommonModule,
     SubmittedDirective,
+    NotSubmittedDirective,
     FormsModule,
     MatButtonModule,
     MatInputModule,

@@ -1,7 +1,8 @@
 import { Directive, ElementRef } from '@angular/core';
 
 @Directive({
-  selector: '[appNotSubmitted]'
+  selector: '[appnotsubmitted]',
+  standalone: true
 })
 export class NotSubmittedDirective {
 

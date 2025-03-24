@@ -11,15 +11,15 @@
         <mat-list-item
           [ngClass]="assignment.submitted ? 'submitted' : 'nonsubmitted'">
           @if (assignment.submitted) {
-            <p appsubmitted>
+            <mat-list-item appsubmitted>
               The assignment <strong>{{assignment.name}}</strong> has been submitted on  
               <strong>{{assignment.assignmentDueDate | date: 'dd/MM/yyyy' }}</strong>.
-            </p>
+            </mat-list-item>
           } @else {
-            <p>
+            <mat-list-item appnotsubmitted>
               The assignment <strong>{{assignment.name}}</strong> has to be submitted by
               <strong>{{assignment.assignmentDueDate | date: 'dd/MM/yyyy' }}</strong>.
-            </p>
+            </mat-list-item>
           }
         </mat-list-item>
         <mat-divider></mat-divider>
