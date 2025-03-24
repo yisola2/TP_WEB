@@ -38,10 +38,10 @@ export class AddAssignmentComponent {
   assignmentDate: Date = new Date();
   selectedAssignment!:Assignment;
 
-  onSubmit(nameAssignment: any){
+  onSubmit(){
     const newAssignment = new Assignment();
     newAssignment.id = Math.floor(Math.random()*1000);
-    newAssignment.name = nameAssignment; 
+    newAssignment.name = this.assignmentName; 
     newAssignment.assignmentDueDate = this.assignmentDate; 
     newAssignment.postedOn = new Date();
     newAssignment.submitted = false;

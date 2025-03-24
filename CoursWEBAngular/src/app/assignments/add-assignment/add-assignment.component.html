@@ -2,7 +2,6 @@
 
     <mat-form-field>
         <input matInput 
-            #assignmentName
             placeholder="Assignment name"
             [(ngModel)]="assignmentName"
             name="name"
@@ -21,7 +20,7 @@
     
     <button mat-raised-button 
             color="primary" 
-            (click)="onSubmit(assignmentName.value)"
+            (click)="onSubmit()"
 > 
         Add an assignment
     </button>
