@@ -45,17 +45,17 @@ src/
 │   │   ├── add-assignment/         # Add new assignments
 │   │   ├── assignment-detail/      # View assignment details
 │   │   ├── edit-assignment/        # Edit existing assignments
-│   │   ├── assignment.model.ts     # Assignment data model
-│   │   └── assignments.component.* # Main assignments list
+│   │   ├── assignment.model.ts     
+│   │   └── assignments.component.ts
 │   ├── login/                      # Authentication components
 │   ├── shared/                     # Shared services and directives
 │   │   ├── auth.service.ts         # Authentication logic
 │   │   ├── auth.guard.ts           # Route protection
-│   │   ├── assignments.service.ts  # Assignment data management
+│   │   ├── assignments.service.ts 
 │   │   ├── logging.service.ts      # Logging functionality
 │   │   ├── submitted.directive.ts  # Visual styling for submitted
 │   │   └── not-submitted.directive.ts # Visual styling for not submitted
-│   ├── app.component.*             # App root component
+│   ├── app.component.ts             # App root component
 │   ├── app.routes.ts               # App routing configuration
 │   └── app.config.ts               # App configuration
 └── ...
