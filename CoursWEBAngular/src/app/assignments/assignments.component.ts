@@ -83,7 +83,7 @@ export class AssignmentsComponent implements OnInit {
       .subscribe(result => {
         console.log('Pagination result:', result);
         this.assignments = result.assignments || [];
-        this.totalAssignments = result.paginator?.totalDocs || 0;
+        this.totalAssignments = result.paginator?.totalAssignments || 0;
       });
   }
 
