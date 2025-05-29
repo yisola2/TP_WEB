@@ -4,6 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { LoggingService } from './logging.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
+import { PageEvent } from '@angular/material/paginator';
 
 @Injectable({
   providedIn: 'root'
@@ -75,4 +76,19 @@ export class AssignmentsService {
     return this.http.delete(`${this.backendURL}/${assignment._id}`);
   }
   
+  getAssignmentsWithPagination(page: number = 1, limit: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.backendURL}?page=${page}&limit=${limit}`).pipe(
+      map(result => {
+        if (result.docs) {
+          result.docs = result.docs.map((assignment: Assignment) => {
+            if (assignment.dueDate && typeof assignment.dueDate === 'string') {
+              assignment.dueDate = new Date(assignment.dueDate);
+            }
+            return assignment;
+          });
+        }
+        return result;
+      })
+    );
+  }
 }

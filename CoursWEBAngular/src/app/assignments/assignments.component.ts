@@ -20,7 +20,7 @@ import { RouterModule } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { NotSubmittedDirective } from '../shared/not-submitted.directive';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -66,23 +66,31 @@ export class AssignmentsComponent implements OnInit {
   SelectedAssignment?: Assignment;
   assignments: Assignment[] = [];
 
+  totalAssignments = 0;
+  pageSize = 10;
+  currentPage = 0;
+
   constructor (private assignmentsService:AssignmentsService) {}
 
   assignmentDueDate: any;
 
   ngOnInit(): void {
-    this.getAssignment();
+    this.getAssignments(1);
   }
   
-  getAssignment() {
-    this.assignmentsService.getAssignments().subscribe(assignments => {
-      this.assignments = assignments.map(a => {
-        return {
-          ...a,
-          submitted: a.submitted === true || String(a.submitted) === 'true'
-        };
+  getAssignments(page: number = 1) {
+    this.assignmentsService.getAssignmentsWithPagination(page, this.pageSize)
+      .subscribe(result => {
+        console.log('Pagination result:', result);
+        this.assignments = result.assignments || [];
+        this.totalAssignments = result.paginator?.totalDocs || 0;
       });
-    });
+  }
+
+  onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getAssignments(event.pageIndex + 1);
   }
   
   

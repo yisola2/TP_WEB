@@ -78,5 +78,12 @@
   <p *ngIf="assignments.length === 0">No assignments available.</p>
 
   <mat-divider></mat-divider>
+  <mat-paginator 
+    [length]="totalAssignments"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 20]"
+    (page)="onPageChange($event)"
+    showFirstLastButtons>
+  </mat-paginator>
 <!--<app-assignment-detail [assignmentTransmis]="SelectedAssignment"></app-assignment-detail>-->
 </main>
