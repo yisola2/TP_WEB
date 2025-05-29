@@ -1,16 +1,42 @@
-<mat-card>
-    @if (assignmentTransmis()) {
-    <mat-card-content>
-        <mat-card-subtitle>{{assignmentTransmis()?.name}}</mat-card-subtitle>
-        <mat-card-content>{{assignmentTransmis()?.assignmentDueDate | date}}</mat-card-content>
-        <mat-card-actions id="bottom">
-            @if (assignmentTransmis() && !assignmentTransmis()?.submitted) {
-                <mat-checkbox (change)="onAssignmentRendu()">Assignment submitted</mat-checkbox>
-              }
-              
-            <button mat-stroked-button color="primary" (click)="onClickEdit()" [disabled]="!isAdmin()">Edit</button>
-            <button mat-flat-button color="primary" (click)="onDelete()" [disabled]="!isAdmin()">Delete</button>
-        </mat-card-actions>
-    </mat-card-content>
-    }
+<mat-card *ngIf="assignmentTransmis()">
+  <mat-card-header>
+    <mat-card-title>{{assignmentTransmis()?.name}}</mat-card-title>
+    <mat-card-subtitle>Date : {{assignmentTransmis()?.dueDate | date:'dd/MM/yyyy'}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div>
+        <img *ngIf="assignmentTransmis()?.auteur?.photo" [src]="assignmentTransmis()?.auteur?.photo" alt="Photo élève" width="60" style="border-radius:50%">
+        <div><strong>Auteur :</strong> {{assignmentTransmis()?.auteur?.nom}}</div>
+      </div>
+      <div>
+        <img *ngIf="assignmentTransmis()?.matiere?.image" [src]="assignmentTransmis()?.matiere?.image" alt="Image matière" width="60">
+        <div><strong>Matière :</strong> {{assignmentTransmis()?.matiere?.nom}}</div>
+      </div>
+      <div>
+        <img *ngIf="assignmentTransmis()?.matiere?.prof?.photo" [src]="assignmentTransmis()?.matiere?.prof?.photo" alt="Photo prof" width="60" style="border-radius:50%">
+        <div><strong>Prof :</strong> {{assignmentTransmis()?.matiere?.prof?.nom}}</div>
+      </div>
+    </div>
+    <div style="margin-top: 16px;">
+      <strong>Note :</strong> {{assignmentTransmis()?.note}} / 20
+    </div>
+    <div style="margin-top: 8px;">
+      <strong>Remarques :</strong> {{assignmentTransmis()?.remarques}}
+    </div>
+    <div style="margin-top: 8px;">
+      <strong>Statut :</strong>
+      <span [ngClass]="assignmentTransmis()?.submitted ? 'submitted' : 'nonsubmitted'">
+        <mat-icon color="primary">{{assignmentTransmis()?.submitted ? 'check_circle' : 'hourglass_empty'}}</mat-icon>
+        {{assignmentTransmis()?.submitted ? 'Rendu' : 'À rendre'}}
+      </span>
+    </div>
+  </mat-card-content>
+  <mat-card-actions id="bottom">
+    <ng-container *ngIf="assignmentTransmis() && !assignmentTransmis()?.submitted">
+      <mat-checkbox (change)="onAssignmentRendu()">Assignment submitted</mat-checkbox>
+    </ng-container>
+    <button mat-stroked-button color="primary" (click)="onClickEdit()" [disabled]="!isAdmin()">Edit</button>
+    <button mat-flat-button color="warn" (click)="confirmDelete()" [disabled]="!isAdmin()">Delete</button>
+  </mat-card-actions>
 </mat-card>

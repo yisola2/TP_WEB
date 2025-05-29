@@ -1,41 +1,59 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private apiUrl = 'https://assignment-api-xftj.onrender.com/api';
+  private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
+  private userRole = new BehaviorSubject<string | null>(this.getRole());
 
-  private users = [
-    { login: 'admin', password: 'azerty', role: 'admin' },
-    { login: 'user', password: 'azerty', role: 'user' }
-  ];
+  constructor(private http: HttpClient, private router: Router) {}
 
-  private currentUser: any = null;
-
-  loggedIn= false;
-
-  logIn(login: string, password: string) {
-    const user = this.users.find(u => u.login === login && u.password === password);
-    if (user) {
-      this.currentUser = user;
-      return true;
-    }
-    return false;
+  login(username: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(
+      tap(res => {
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('role', res.user.role);
+        this.loggedIn.next(true);
+        this.userRole.next(res.user.role);
+      })
+    );
   }
 
-  getCurrentUser() {
-    return this.currentUser;
+  register(username: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register`, { username, password });
   }
 
-  logOut() {
-    this.currentUser = null;
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    this.loggedIn.next(false);
+    this.userRole.next(null);
+    this.router.navigate(['/login']);
   }
 
-  isLogged(): boolean {
-    return this.currentUser !== null;
+  isLoggedIn(): Observable<boolean> {
+    return this.loggedIn.asObservable();
   }
-  
+
   isAdmin(): boolean {
-    return this.currentUser?.role === 'admin';
+    return this.getRole() === 'admin';
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  getRole(): string | null {
+    return localStorage.getItem('role');
+  }
+
+  private hasToken(): boolean {
+    return !!localStorage.getItem('token');
   }
 }

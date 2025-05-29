@@ -17,6 +17,30 @@
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Auteur (élève)" [(ngModel)]="auteurNom" name="auteurNom" required>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Photo élève (URL)" [(ngModel)]="auteurPhoto" name="auteurPhoto">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Matière</mat-label>
+        <mat-select [(ngModel)]="matiereNom" name="matiereNom" required>
+            <mat-option *ngFor="let m of matieres" [value]="m.nom">{{m.nom}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div *ngIf="matiereSelectionnee">
+        <img *ngIf="matiereSelectionnee?.image" [src]="matiereSelectionnee?.image" alt="Image matière" width="60">
+        <span *ngIf="matiereSelectionnee?.prof?.nom">Prof : {{matiereSelectionnee?.prof?.nom}}</span>
+        <img *ngIf="matiereSelectionnee?.prof?.photo" [src]="matiereSelectionnee?.prof?.photo" alt="Photo prof" width="40">
+    </div>
+    <mat-form-field>
+        <input matInput type="number" min="0" max="20" placeholder="Note sur 20" [(ngModel)]="note" name="note" required>
+    </mat-form-field>
+    <mat-form-field>
+        <textarea matInput placeholder="Remarques" [(ngModel)]="remarques" name="remarques"></textarea>
+    </mat-form-field>
     
     <button mat-raised-button 
             color="primary" 

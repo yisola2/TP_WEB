@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { AssignmentsComponent } from "./assignments/assignments.component";
@@ -19,7 +20,7 @@ import { AssignmentsService } from './shared/assignments.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatButtonModule, MatDividerModule, MatToolbarModule, MatIconModule, MatSidenavModule, FormsModule, MatListItem, MatListModule,
+  imports: [CommonModule, RouterOutlet, MatButtonModule, MatDividerModule, MatToolbarModule, MatIconModule, MatSidenavModule, FormsModule, MatListItem, MatListModule,
     RouterModule, RouterLink, MatSlideToggleModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
@@ -28,6 +29,14 @@ export class AppComponent {
   title = 'Assignment App with Angular';
   opened = false;
 
-  constructor(private authService: AuthService, private router: Router, private assignmentsService:AssignmentsService) {}
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    private assignmentsService: AssignmentsService
+  ) {}
 
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

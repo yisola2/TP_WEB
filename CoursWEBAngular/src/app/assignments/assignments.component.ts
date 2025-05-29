@@ -22,6 +22,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { NotSubmittedDirective } from '../shared/not-submitted.directive';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -46,7 +48,9 @@ import { NotSubmittedDirective } from '../shared/not-submitted.directive';
     RouterLink,
     MatSlideToggleModule,
     MatPaginatorModule,
-    AssignmentDetailComponent
+    MatTableModule,
+    MatIconModule
+    //AssignmentDetailComponent
 ],
   providers: [],
   templateUrl: './assignments.component.html',
@@ -72,7 +76,18 @@ export class AssignmentsComponent implements OnInit {
   
   getAssignment() {
     this.assignmentsService.getAssignments().subscribe(assignments => {
-      this.assignments = assignments;
+      this.assignments = assignments.map(a => {
+        let dueDate = a.dueDate;
+        if (dueDate && typeof dueDate === 'string') {
+          const [day, month, year] = (dueDate as string).split('/');
+          dueDate = new Date(+year, +month - 1, +day);
+        }
+        return {
+          ...a,
+          dueDate,
+          submitted: a.submitted === true || String(a.submitted) === 'true'
+        };
+      });
     });
   }
   

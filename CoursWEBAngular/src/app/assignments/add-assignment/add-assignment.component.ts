@@ -20,13 +20,15 @@ import { RouterLink } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 
 import { AssignmentsService } from '../../shared/assignments.service';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-add-assignment',
   standalone: true,
   imports: [CommonModule, FormsModule, MatButtonModule, MatInputModule, MatDatepickerModule, 
     MatFormFieldModule, MatInputModule, MatDividerModule, MatDatepickerModule, MatNativeDateModule
-    , MatListModule, RouterModule],
+    , MatListModule, RouterModule, MatSelectModule, MatOptionModule],
   providers: [],
   templateUrl: './add-assignment.component.html',
   styleUrl: './add-assignment.component.css'
@@ -36,18 +38,42 @@ export class AddAssignmentComponent {
   
   assignmentName = "";
   assignmentDate: Date = new Date();
+  auteurNom = "";
+  auteurPhoto = "";
+  matiereNom = "";
+  note: number | null = null;
+  remarques = "";
+
+  // Pour la liste des matières (exemple)
+  matieres = [
+    { nom: 'Base de données', image: 'assets/bdd.png', prof: { nom: 'Mme Dupont', photo: 'assets/dupont.png' } },
+    { nom: 'Technologies Web', image: 'assets/web.png', prof: { nom: 'M. Martin', photo: 'assets/martin.png' } },
+    { nom: 'Grails', image: 'assets/grails.png', prof: { nom: 'Mme Leroy', photo: 'assets/leroy.png' } }
+  ];
+
   selectedAssignment!:Assignment;
+
+  get matiereSelectionnee() {
+    return this.matieres.find(m => m.nom === this.matiereNom);
+  }
 
   onSubmit(){
     const generatedId = Math.floor(Math.random() * 1000000);
-
     const newAssignment = new Assignment();
-
     newAssignment.id = generatedId;
     newAssignment.name = this.assignmentName; 
-    newAssignment.assignmentDueDate = this.assignmentDate; 
+    newAssignment.dueDate = this.assignmentDate; 
     newAssignment.postedOn = new Date();
     newAssignment.submitted = false;
+    newAssignment.auteur = { nom: this.auteurNom, photo: this.auteurPhoto };
+    const matiereObj = this.matiereSelectionnee;
+    newAssignment.matiere = matiereObj ? {
+      nom: matiereObj.nom,
+      image: matiereObj.image,
+      prof: matiereObj.prof
+    } : { nom: this.matiereNom };
+    newAssignment.note = this.note ?? 0;
+    newAssignment.remarques = this.remarques;
     
     this.assignmentsService.addAssignment(newAssignment)
       .subscribe({

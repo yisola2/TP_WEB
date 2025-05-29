@@ -11,18 +11,18 @@ import { catchError, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AssignmentsService {
+  backendURL="https://assignment-api-xftj.onrender.com/api/assignments";
   // Static assignment data
   private assignments: Assignment[] = [];
 
-  constructor(private loggingService: LoggingService) { }
+  constructor(private loggingService: LoggingService, private http: HttpClient) { }
 
-  getAssignment(id: number): Observable<Assignment | undefined> {
-    const assignment = this.assignments.find(a => a.id === id);
-    return of(assignment);
+  getAssignment(id: string): Observable<Assignment | undefined> {
+    return this.http.get<Assignment>(`${this.backendURL}/${id}`);
   }
 
   getAssignments(): Observable<Assignment[]> {
-    return of(this.assignments);
+    return this.http.get<any>(this.backendURL);
   }
 
   addAssignment(assignment: Assignment): Observable<any> {
@@ -54,10 +54,6 @@ export class AssignmentsService {
   }
 
   deleteAssignment(assignment: Assignment): Observable<any> {
-    const index = this.assignments.findIndex(a => a.id === assignment.id);
-    if (index !== -1) {
-      this.assignments.splice(index, 1);
-    }
-    return of({message: 'Assignment supprimé'});
+    return this.http.delete(`${this.backendURL}/${assignment._id}`);
   }
   }

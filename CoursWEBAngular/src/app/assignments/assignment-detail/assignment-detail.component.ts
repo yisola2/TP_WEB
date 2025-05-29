@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/auth.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-assignment-detail',
@@ -16,7 +17,8 @@ import { AuthService } from '../../shared/auth.service';
     CommonModule, 
     MatCardModule, 
     MatCheckboxModule, 
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
   templateUrl: './assignment-detail.component.html',
   styleUrl: './assignment-detail.component.css'
@@ -35,15 +37,24 @@ export class AssignmentDetailComponent implements OnInit {
   }
   
   private getAssignment() {
-    const id = +this.route.snapshot.params['id'];
+    const id = this.route.snapshot.params['id'];
     this.assignmentsServises.getAssignment(id).subscribe(assignment => {
-      this.assignmentTransmis.set(assignment ?? null);
+      // Patch rapide : conversion dueDate string 'DD/MM/YYYY' en Date
+      if (assignment && assignment.dueDate && typeof assignment.dueDate === 'string') {
+        const [day, month, year] = (assignment.dueDate as string).split('/');
+        assignment.dueDate = new Date(+year, +month - 1, +day);
+      }
+      this.assignmentTransmis.set(
+        assignment
+          ? { ...assignment, submitted: assignment.submitted === true || String(assignment.submitted) === 'true' }
+          : null
+      );
     });
   }
 
   onClickEdit(){
     if (this.assignmentTransmis()) {
-      this.router.navigate(["assignment", this.assignmentTransmis()!.id, 'edit'],
+      this.router.navigate(["assignment", this.assignmentTransmis()!._id, 'edit'],
       {queryParams:{name:this.assignmentTransmis()!.name},fragment:'edition'});
     }
   }
@@ -81,8 +92,13 @@ export class AssignmentDetailComponent implements OnInit {
     }
   }
 
+  confirmDelete() {
+    if (confirm('Voulez-vous vraiment supprimer cet assignment ?')) {
+      this.onDelete();
+    }
+  }
+
   isAdmin(): boolean {
-    const user = this.authService.getCurrentUser();
-    return user?.role === 'admin';
+    return this.authService.isAdmin();
   }
 }
