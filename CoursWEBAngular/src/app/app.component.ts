@@ -26,7 +26,7 @@ import { AssignmentsService } from './shared/assignments.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Assignment App with Angular';
+  //title = 'Assignment App with Angular';
   opened = false;
 
   constructor(
