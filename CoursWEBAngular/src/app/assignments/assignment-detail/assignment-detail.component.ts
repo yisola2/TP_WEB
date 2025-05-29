@@ -39,11 +39,7 @@ export class AssignmentDetailComponent implements OnInit {
   private getAssignment() {
     const id = this.route.snapshot.params['id'];
     this.assignmentsServises.getAssignment(id).subscribe(assignment => {
-      // Patch rapide : conversion dueDate string 'DD/MM/YYYY' en Date
-      if (assignment && assignment.dueDate && typeof assignment.dueDate === 'string') {
-        const [day, month, year] = (assignment.dueDate as string).split('/');
-        assignment.dueDate = new Date(+year, +month - 1, +day);
-      }
+      
       this.assignmentTransmis.set(
         assignment
           ? { ...assignment, submitted: assignment.submitted === true || String(assignment.submitted) === 'true' }

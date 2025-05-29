@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import { Assignment } from '../assignments/assignment.model';
 import { Observable, of, throwError } from 'rxjs';
 import { LoggingService } from './logging.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -18,42 +16,63 @@ export class AssignmentsService {
   constructor(private loggingService: LoggingService, private http: HttpClient) { }
 
   getAssignment(id: string): Observable<Assignment | undefined> {
-    return this.http.get<Assignment>(`${this.backendURL}/${id}`);
+    return this.http.get<Assignment>(`${this.backendURL}/${id}`).pipe(
+      map(assignment => {
+        console.log('Raw assignment from backend:', assignment);
+        if (assignment && assignment.dueDate && typeof assignment.dueDate === 'string') {
+          assignment.dueDate = new Date(assignment.dueDate);
+          console.log('Converted dueDate:', assignment.dueDate);
+        }
+        if (assignment && assignment.postedOn && typeof assignment.postedOn === 'string') {
+          assignment.postedOn = new Date(assignment.postedOn);
+        }
+        console.log('Final assignment after conversion:', assignment);
+        return assignment;
+      })
+    );
   }
 
   getAssignments(): Observable<Assignment[]> {
-    return this.http.get<any>(this.backendURL);
+    return this.http.get<Assignment[]>(this.backendURL).pipe(
+      map(assignments => {
+        console.log('Raw assignments from backend:', assignments);
+        const convertedAssignments = assignments.map(assignment => {
+          if (assignment.dueDate && typeof assignment.dueDate === 'string') {
+            assignment.dueDate = new Date(assignment.dueDate);
+          }
+          if (assignment.postedOn && typeof assignment.postedOn === 'string') {
+            assignment.postedOn = new Date(assignment.postedOn);
+          }
+          return assignment;
+        });
+        console.log('Final assignments after conversion:', convertedAssignments);
+        return convertedAssignments;
+      })
+    );
   }
 
   addAssignment(assignment: Assignment): Observable<any> {
-    if (!Number.isFinite(assignment.id)) {
-      assignment.id = this.assignments.length > 0
-        ? Math.max(...this.assignments.map(a => a.id)) + 1
-        : 1; // fallback safe
-    }
-    this.assignments.push(assignment);
     this.loggingService.log(assignment.name, "ajouté");
-    return of({message: 'Assignment ajouté'});
-}
+    // Ensure dates are properly formatted for backend
+    const assignmentToSend = { ...assignment };
+    if (assignmentToSend.dueDate instanceof Date) {
+      assignmentToSend.dueDate = assignmentToSend.dueDate as any; // Keep as Date object
+    }
+    return this.http.post<Assignment>(this.backendURL, assignmentToSend);
+  }
 
   updateAssignment(assignment: Assignment): Observable<any> {
-    console.log('Updating assignment with ID:', assignment.id);
-    
-    // Find the assignment to update
-    const index = this.assignments.findIndex(a => a.id === assignment.id);
-    
-    if (index !== -1) {
-      // Create a NEW object to avoid reference issues
-      this.assignments[index] = {...assignment};
-      console.log('Assignment updated locally:', this.assignments[index]);
-    } else {
-      console.warn('Assignment not found with ID:', assignment.id);
+    const assignmentToSend = { ...assignment };
+    if (assignmentToSend.dueDate instanceof Date) {
+      assignmentToSend.dueDate = assignmentToSend.dueDate as any;
     }
-    
-    return of({message: 'Assignment modifié'});
+  
+    return this.http.put<Assignment>(`${this.backendURL}/${assignment._id}`, assignmentToSend);
   }
+  
 
   deleteAssignment(assignment: Assignment): Observable<any> {
     return this.http.delete(`${this.backendURL}/${assignment._id}`);
   }
-  }
+  
+}

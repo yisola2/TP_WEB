@@ -77,14 +77,8 @@ export class AssignmentsComponent implements OnInit {
   getAssignment() {
     this.assignmentsService.getAssignments().subscribe(assignments => {
       this.assignments = assignments.map(a => {
-        let dueDate = a.dueDate;
-        if (dueDate && typeof dueDate === 'string') {
-          const [day, month, year] = (dueDate as string).split('/');
-          dueDate = new Date(+year, +month - 1, +day);
-        }
         return {
           ...a,
-          dueDate,
           submitted: a.submitted === true || String(a.submitted) === 'true'
         };
       });

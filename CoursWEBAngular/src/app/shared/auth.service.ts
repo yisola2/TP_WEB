@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +18,16 @@ export class AuthService {
   login(username: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(
       tap(res => {
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('role', res.user.role);
-        this.loggedIn.next(true);
-        this.userRole.next(res.user.role);
+        if (res && res.token) {
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('role', res.user?.role || 'user');
+          this.loggedIn.next(true);
+          this.userRole.next(res.user?.role || 'user');
+        }
+      }),
+      catchError(error => {
+        console.error('Login error:', error);
+        return of(null);
       })
     );
   }
@@ -54,6 +61,20 @@ export class AuthService {
   }
 
   private hasToken(): boolean {
-    return !!localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    return !!token && token.length > 0;
+  }
+
+  // Helper method to check if token is valid (you can expand this)
+  isTokenValid(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+    
+    try {
+      // Basic check - you could decode JWT and check expiration
+      return token.length > 10;
+    } catch {
+      return false;
+    }
   }
 }
