@@ -31,6 +31,9 @@
         {{assignmentTransmis()?.submitted ? 'Rendu' : 'À rendre'}}
       </span>
     </div>
+    <div>
+      <strong>Créé le :</strong> {{assignmentTransmis()?.postedOn | date:'dd/MM/yyyy'}}
+    </div>
   </mat-card-content>
   <mat-card-actions id="bottom">
     <ng-container *ngIf="assignmentTransmis() && !assignmentTransmis()?.submitted">

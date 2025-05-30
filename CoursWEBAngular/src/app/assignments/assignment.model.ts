@@ -2,7 +2,7 @@ export class Assignment{
     _id?: string;
     id!: number;
     name!: string;
-    postedOn?: Date;
+    postedOn?: Date | string;
     dueDate?: Date;
     submitted!: boolean;
 

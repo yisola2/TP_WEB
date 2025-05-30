@@ -51,6 +51,11 @@
       <th mat-header-cell *matHeaderCellDef> Date </th>
       <td mat-cell *matCellDef="let assignment">{{assignment.dueDate | date:'dd/MM/yyyy'}}</td>
     </ng-container>
+    <!-- Posted On -->
+    <ng-container matColumnDef="postedOn">
+      <th mat-header-cell *matHeaderCellDef> Créé le </th>
+      <td mat-cell *matCellDef="let assignment">{{assignment.postedOn | date:'dd/MM/yyyy'}}</td>
+    </ng-container>
     <!-- Statut -->
     <ng-container matColumnDef="statut">
       <th mat-header-cell *matHeaderCellDef> Statut </th>
@@ -71,8 +76,8 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="['name','auteur','photoEleve','matiere','note','prof','remarques','date','statut','actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['name','auteur','photoEleve','matiere','note','prof','remarques','date','statut','actions'];"></tr>
+    <tr mat-header-row *matHeaderRowDef="['name','auteur','photoEleve','matiere','note','prof','remarques','date','postedOn','statut','actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['name','auteur','photoEleve','matiere','note','prof','remarques','date','postedOn','statut','actions'];"></tr>
   </table>
 
   <p *ngIf="assignments.length === 0">No assignments available.</p>
