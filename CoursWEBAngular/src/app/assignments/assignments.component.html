@@ -60,10 +60,18 @@
     <ng-container matColumnDef="statut">
       <th mat-header-cell *matHeaderCellDef> Statut </th>
       <td mat-cell *matCellDef="let assignment">
-        <span [ngClass]="assignment.submitted ? 'submitted' : 'nonsubmitted'">
-          <mat-icon color="primary">{{assignment.submitted ? 'check_circle' : 'hourglass_empty'}}</mat-icon>
-          {{assignment.submitted ? 'Rendu' : 'À rendre'}}
-        </span>
+        @if (assignment.submitted) {
+          <span appsubmitted>
+            <mat-icon color="primary">check_circle</mat-icon>
+            Rendu
+          </span>
+        }
+        @if (!assignment.submitted) {
+          <span appnotsubmitted>
+            <mat-icon color="primary">hourglass_empty</mat-icon>
+            À rendre
+          </span>
+        }
       </td>
     </ng-container>
     <!-- Actions -->
