@@ -5,12 +5,13 @@ import { AssignmentDetailComponent } from './assignments/assignment-detail/assig
 import { EditAssignmentComponent } from './assignments/edit-assignment/edit-assignment.component';
 import { AuthGuard } from './shared/auth.guard';
 import { LoginComponent } from './login/login.component';
+import { AdminGuard } from './shared/admin.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: AssignmentsComponent },
     { path: 'add', component: AddAssignmentComponent },
     { path: 'assignment/:id', component:AssignmentDetailComponent},
-    { path: 'assignment/:id/edit', component:EditAssignmentComponent, canActivate: [AuthGuard]},
+    { path: 'assignment/:id/edit', component:EditAssignmentComponent, canActivate: [AdminGuard]},
     { path: 'login', component: LoginComponent },
 ];
