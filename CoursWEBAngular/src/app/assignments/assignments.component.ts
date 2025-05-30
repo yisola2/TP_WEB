@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SubmittedDirective } from '../shared/submitted.directive';
 import { Assignment } from './assignment.model';
 import { AssignmentsService } from '../shared/assignments.service';
+import { AuthService } from '../shared/auth.service';
 
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -70,7 +71,7 @@ export class AssignmentsComponent implements OnInit {
   pageSize = 10;
   currentPage = 0;
 
-  constructor (private assignmentsService:AssignmentsService) {}
+  constructor (private assignmentsService:AssignmentsService, private authService: AuthService) {}
 
   assignmentDueDate: any;
 
@@ -128,4 +129,7 @@ export class AssignmentsComponent implements OnInit {
   }
     */
   
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
 }
