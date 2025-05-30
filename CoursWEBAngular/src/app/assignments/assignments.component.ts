@@ -44,7 +44,6 @@ import { MatIconModule } from '@angular/material/icon';
     MatDatepickerModule,
     MatNativeDateModule,
     MatListModule,
-    MatListItem,
     RouterModule,
     RouterLink,
     MatSlideToggleModule,

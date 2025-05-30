@@ -24,9 +24,9 @@
        </mat-select>
      </mat-form-field>
      <div *ngIf="matiereSelectionnee">
-       <img *ngIf="matiereSelectionnee?.image" [src]="matiereSelectionnee?.image" alt="Image matière" width="60">
-       <span *ngIf="matiereSelectionnee?.prof?.nom">Prof : {{matiereSelectionnee?.prof?.nom}}</span>
-       <img *ngIf="matiereSelectionnee?.prof?.photo" [src]="matiereSelectionnee?.prof?.photo" alt="Photo prof" width="40">
+       <img *ngIf="matiereSelectionnee.image" [src]="matiereSelectionnee.image" alt="Image matière" width="60">
+       <span *ngIf="matiereSelectionnee.prof?.nom">Prof : {{matiereSelectionnee.prof.nom}}</span>
+       <img *ngIf="matiereSelectionnee.prof?.photo" [src]="matiereSelectionnee.prof.photo" alt="Photo prof" width="40">
      </div>
      <mat-form-field>
        <input matInput type="number" min="0" max="20" placeholder="Note sur 20" [(ngModel)]="note" name="note" required>
