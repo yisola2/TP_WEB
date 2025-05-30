@@ -1,6 +1,6 @@
 import {
   MatCommonModule
-} from "./chunk-ITNRUNCO.js";
+} from "./chunk-I3TQKKFD.js";
 import {
   CommonModule
 } from "./chunk-TLYFZ76Q.js";
@@ -27,8 +27,8 @@ import {
   ɵɵprojection,
   ɵɵprojectionDef
 } from "./chunk-OAGFKL35.js";
-import "./chunk-UEYFFO6E.js";
 import "./chunk-LPEPAQVY.js";
+import "./chunk-UEYFFO6E.js";
 import "./chunk-LBGRCHB7.js";
 
 // node_modules/@angular/material/fesm2022/card.mjs
