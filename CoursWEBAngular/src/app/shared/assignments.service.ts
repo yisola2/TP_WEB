@@ -62,7 +62,7 @@ export class AssignmentsService {
       assignmentToSend.postedOn = assignmentToSend.postedOn.toISOString();
     }
     return this.http.post<Assignment>(this.backendURL, assignmentToSend);
-  }
+}
 
   updateAssignment(assignment: Assignment): Observable<any> {
     const assignmentToSend = { ...assignment };
@@ -92,7 +92,7 @@ export class AssignmentsService {
             }
             if (assignment.postedOn && typeof assignment.postedOn === 'string') {
               assignment.postedOn = new Date(assignment.postedOn);
-            }
+    }
             return assignment;
           });
         }
@@ -100,4 +100,4 @@ export class AssignmentsService {
       })
     );
   }
-}
+  }

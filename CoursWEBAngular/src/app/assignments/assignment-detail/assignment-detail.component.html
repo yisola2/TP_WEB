@@ -40,7 +40,7 @@
       <mat-checkbox (change)="onAssignmentRendu()">Assignment submitted</mat-checkbox>
     </ng-container>
     <button mat-stroked-button color="primary" (click)="onClickEdit()" [disabled]="!isAdmin()">Edit</button>
-    <button mat-flat-button color="warn" (click)="confirmDelete()" [disabled]="!isAdmin()">Delete</button>
+    <button mat-raised-button color="warn" (click)="confirmDelete()" [disabled]="!isAdmin()">Delete</button>
   </mat-card-actions>
   <ng-container *ngIf="assignmentTransmis() as assignment">
     <div *ngIf="isAdmin()" style="margin-top: 16px;">
