@@ -1,45 +1,46 @@
-<form class="form" #formAssignment>
-
-    <mat-form-field>
-        <input matInput 
-            placeholder="Assignment name"
-            [(ngModel)]="assignmentName"
-            name="name"
-        >
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput 
-            [matDatepicker]="picker" 
-            placeholder="Assignment date" 
-            [(ngModel)]="assignmentDate" 
-            name="date" required
-        >
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput placeholder="Auteur (élève)" [(ngModel)]="auteurNom" name="auteurNom" required>
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput placeholder="Photo élève (URL)" [(ngModel)]="auteurPhoto" name="auteurPhoto">
-    </mat-form-field>
-    <mat-form-field>
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Informations générales</ng-template>
+      <mat-form-field>
+        <mat-label>Nom du devoir</mat-label>
+        <input matInput formControlName="nom" required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Date de rendu</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dateDeRendu" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Suivant</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Matière</ng-template>
+      <mat-form-field>
         <mat-label>Matière</mat-label>
-        <mat-select [(ngModel)]="matiereNom" name="matiereNom" required>
-            <mat-option *ngFor="let m of matieres" [value]="m.nom">{{m.nom}}</mat-option>
+        <mat-select formControlName="matiere" required>
+          <mat-option *ngFor="let mat of matieres" [value]="mat">{{mat}}</mat-option>
         </mat-select>
-    </mat-form-field>
-    <div *ngIf="matiereSelectionnee">
-        <img *ngIf="matiereSelectionnee.image" [src]="matiereSelectionnee.image" alt="Image matière" width="60">
-        <span *ngIf="matiereSelectionnee.prof?.nom">Prof : {{matiereSelectionnee.prof.nom}}</span>
-        <img *ngIf="matiereSelectionnee.prof?.photo" [src]="matiereSelectionnee.prof.photo" alt="Photo prof" width="40">
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Précédent</button>
+        <button mat-button matStepperNext>Suivant</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Validation</ng-template>
+    <p>Récapitulatif :</p>
+    <p>Nom : {{firstFormGroup.value.nom}}</p>
+    <p>Date de rendu : {{firstFormGroup.value.dateDeRendu | date}}</p>
+    <p>Matière : {{secondFormGroup.value.matiere}}</p>
+    <div>
+      <button mat-button matStepperPrevious>Précédent</button>
+      <button mat-raised-button color="primary" (click)="onSubmit()">Ajouter</button>
     </div>
-    
-    <button mat-raised-button 
-            color="primary" 
-            (click)="onSubmit()"
-> 
-        Add an assignment
-    </button>
-</form>
+  </mat-step>
+</mat-horizontal-stepper>
