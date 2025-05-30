@@ -2,11 +2,17 @@
     <mat-toolbar-row>
         <button mat-button (click)="opened=!opened"><mat-icon>menu</mat-icon>Menu</button>
         <button mat-button routerLink="/home" ><mat-icon>home</mat-icon>Home</button>
-        <a routerLink="/login"><button mat-button><mat-icon>login</mat-icon>Login</button></a>
-        <span *ngIf="authService.isLoggedIn() | async" style="margin-left:auto;">
-          <span style="margin-right: 1em;">Connecté : {{ authService.getRole() }}</span>
-          <button mat-button (click)="logout()"><mat-icon>logout</mat-icon>Logout</button>
-        </span>
+        @if (!(authService.isLoggedIn() | async)) {
+          <a routerLink="/login">
+            <button mat-button><mat-icon>login</mat-icon>Login</button>
+          </a>
+        }
+        @if (authService.isLoggedIn() | async) {
+          <span style="margin-left:auto;">
+            <span style="margin-right: 1em;">Connecté : {{ authService.getRole() }}</span>
+            <button mat-button (click)="logout()"><mat-icon>logout</mat-icon>Logout</button>
+          </span>
+        }
     </mat-toolbar-row>
 </mat-toolbar>
 
