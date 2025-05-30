@@ -16,19 +16,21 @@
     </mat-toolbar-row>
 </mat-toolbar>
 
-<!-- <div>
-    <h3 style="color: rgb(90, 103, 242);">
-        <nav><a routerLink="/home">{{title}}</a> </nav>
-    </h3>
-</div> -->
-
-
-
 <mat-sidenav-container>
     <mat-sidenav [(opened)]="opened" mode="push">
         <mat-list>
-            <mat-list-item><a mat-button routerLink="/home" routerLinkActive="active-link">Assignment list</a></mat-list-item>
-            <mat-list-item><a mat-button routerLink="/add" routerLinkActive="active-link">Add an assignment</a></mat-list-item>
+            <mat-list-item>
+                <a mat-button routerLink="/home" routerLinkActive="active-link" (click)="opened=false">
+                    <mat-icon>list_alt</mat-icon>
+                    Liste des devoirs
+                </a>
+            </mat-list-item>
+            <mat-list-item>
+                <a mat-button routerLink="/add" routerLinkActive="active-link" (click)="opened=false">
+                    <mat-icon>add_circle_outline</mat-icon>
+                    Ajouter un devoir
+                </a>
+            </mat-list-item>
         </mat-list>
     </mat-sidenav>
     <mat-sidenav-content>

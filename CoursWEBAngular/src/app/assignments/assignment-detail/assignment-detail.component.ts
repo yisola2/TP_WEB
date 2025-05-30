@@ -1,37 +1,39 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Assignment } from '../assignment.model';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { AssignmentsService } from '../../shared/assignments.service';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
-import { AuthService } from '../../shared/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { MatDividerModule } from '@angular/material/divider';
+
+import { AssignmentsService } from '../../shared/assignments.service';
+import { AuthService } from '../../shared/auth.service';
 
 @Component({
   selector: 'app-assignment-detail',
   standalone: true,
   imports: [
-    CommonModule, 
-    MatCardModule, 
-    MatCheckboxModule, 
+    CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatCheckboxModule,
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
-    FormsModule
+    MatDividerModule
   ],
   templateUrl: './assignment-detail.component.html',
   styleUrl: './assignment-detail.component.css'
 })
 export class AssignmentDetailComponent implements OnInit {
-  // Using a signal instead of an input
   assignmentTransmis = signal<Assignment | null>(null);
 
-  constructor(private assignmentsServises: AssignmentsService, 
+  constructor(private assignmentsServises: AssignmentsService,
               private authService: AuthService,
               private route: ActivatedRoute,
               private router: Router) {}
@@ -39,11 +41,10 @@ export class AssignmentDetailComponent implements OnInit {
   ngOnInit() {
     this.getAssignment();
   }
-  
+
   private getAssignment() {
     const id = this.route.snapshot.params['id'];
     this.assignmentsServises.getAssignment(id).subscribe(assignment => {
-      
       this.assignmentTransmis.set(assignment ?? null);
     });
   }
@@ -57,18 +58,16 @@ export class AssignmentDetailComponent implements OnInit {
 
   onAssignmentRendu(){
     if (this.assignmentTransmis()) {
-      // Using update to modify the signal value
       this.assignmentTransmis.update(assignment => {
         if (assignment) {
           return {...assignment, submitted: true};
         }
         return assignment;
       });
-      
+
     this.assignmentsServises.updateAssignment(this.assignmentTransmis()!)
       .subscribe({
         next: (response) => {
-          console.log('Assignment marked as submitted:', response);
           this.router.navigate(['/home']);
         },
         error: (error) => {
@@ -81,7 +80,6 @@ export class AssignmentDetailComponent implements OnInit {
   onDelete(){
     if (this.assignmentTransmis()) {
       this.assignmentsServises.deleteAssignment(this.assignmentTransmis()!).subscribe((reponse) => {
-        console.log(reponse.message); 
         this.router.navigate(["/home"]);
       });
       this.assignmentTransmis.set(null);
@@ -103,8 +101,6 @@ export class AssignmentDetailComponent implements OnInit {
       this.assignmentsServises.updateAssignment(this.assignmentTransmis()!)
         .subscribe({
           next: (response) => {
-            console.log('Correction enregistrée:', response);
-            // Optionnel : afficher une notification ou recharger les données
           },
           error: (error) => {
             console.error('Erreur lors de la sauvegarde de la correction:', error);

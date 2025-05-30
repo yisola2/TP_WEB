@@ -1,42 +1,76 @@
 @if(assignment) {
-  <div class="container">
-   <h3>Editing... {{assignment.name}}</h3>
-   <form ngForm class="form" #formupdate (submit)="onSaveAssignment(); formupdate.reset(); ">
-     <mat-form-field>
-       <input matInput placeholder="edit name" [(ngModel)]="assignmentName" name="assignment-name">
-     </mat-form-field>
-     <mat-form-field>
-       <input matInput [matDatepicker]="picker" placeholder="edit date" [(ngModel)]="assignmentDueDate" name="date">
-       <mat-datepicker-toggle matSuffix [for]="picker">
-       </mat-datepicker-toggle>
-       <mat-datepicker #picker></mat-datepicker>
-     </mat-form-field>
-     <mat-form-field>
-       <input matInput placeholder="Auteur (élève)" [(ngModel)]="auteurNom" name="auteurNom" required>
-     </mat-form-field>
-     <mat-form-field>
-       <input matInput placeholder="Photo élève (URL)" [(ngModel)]="auteurPhoto" name="auteurPhoto">
-     </mat-form-field>
-     <mat-form-field>
-       <mat-label>Matière</mat-label>
-       <mat-select [(ngModel)]="matiereNom" name="matiereNom" required>
-         <mat-option *ngFor="let m of matieres" [value]="m.nom">{{m.nom}}</mat-option>
-       </mat-select>
-     </mat-form-field>
-     <div *ngIf="matiereSelectionnee">
-       <img *ngIf="matiereSelectionnee.image" [src]="matiereSelectionnee.image" alt="Image matière" width="60">
-       <span *ngIf="matiereSelectionnee.prof?.nom">Prof : {{matiereSelectionnee.prof.nom}}</span>
-       <img *ngIf="matiereSelectionnee.prof?.photo" [src]="matiereSelectionnee.prof.photo" alt="Photo prof" width="40">
-     </div>
-     <mat-form-field>
-       <input matInput type="number" min="0" max="20" placeholder="Note sur 20" [(ngModel)]="note" name="note" required>
-     </mat-form-field>
-     <mat-form-field>
-       <textarea matInput placeholder="Remarques" [(ngModel)]="remarques" name="remarques"></textarea>
-     </mat-form-field>
-     <button mat-raised-button color="primary" [disabled]="((!assignmentName)||(!assignmentDueDate))">
-      Save
-    </button>
-  </form>
- </div>
- }
+  <div class="edit-assignment-container">
+   <h2 class="page-title">Modifier le Devoir : {{assignmentName}}</h2>
+   <mat-card class="edit-form-card">
+     <mat-card-content>
+        <form ngForm class="edit-form" #formupdate (submit)="onSaveAssignment(); formupdate.reset();">
+          <mat-form-field appearance="outline">
+            <mat-label>Nom du devoir</mat-label>
+            <input matInput placeholder="Modifier le nom" [(ngModel)]="assignmentName" name="assignment-name" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Date de rendu</mat-label>
+            <input matInput [matDatepicker]="picker" placeholder="Modifier la date" [(ngModel)]="assignmentDueDate" name="date" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Auteur (élève)</mat-label>
+            <input matInput placeholder="Nom de l'auteur" [(ngModel)]="auteurNom" name="auteurNom" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Photo élève (URL)</mat-label>
+            <input matInput placeholder="URL de la photo" [(ngModel)]="auteurPhoto" name="auteurPhoto">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Matière</mat-label>
+            <mat-select [(ngModel)]="matiereNom" name="matiereNom" required>
+              @for (m of matieres; track m.nom) {
+                <mat-option [value]="m.nom">{{m.nom}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          @if (matiereSelectionnee) {
+            <div class="matiere-details-preview">
+              <h4>Détails de la matière sélectionnée :</h4>
+              @if (matiereSelectionnee.image) {
+                <img [src]="matiereSelectionnee.image" alt="Image {{matiereSelectionnee.nom}}" class="matiere-image-preview">
+              }
+              @if (matiereSelectionnee.prof?.nom) {
+                <div class="prof-details">
+                  <span>Professeur : {{matiereSelectionnee.prof.nom}}</span>
+                  @if (matiereSelectionnee.prof?.photo) {
+                    <img [src]="matiereSelectionnee.prof.photo" alt="Photo {{matiereSelectionnee.prof.nom}}" class="prof-photo-preview">
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          <mat-form-field appearance="outline">
+            <mat-label>Note sur 20</mat-label>
+            <input matInput type="number" min="0" max="20" step="0.1" placeholder="Note" [(ngModel)]="note" name="note" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Remarques</mat-label>
+            <textarea matInput placeholder="Écrire des remarques..." [(ngModel)]="remarques" name="remarques" rows="4"></textarea>
+          </mat-form-field>
+
+          <div class="action-buttons-container">
+            <button mat-flat-button type="submit" class="save-button" [disabled]="((!assignmentName)||(!assignmentDueDate))">
+              <mat-icon>save</mat-icon> Enregistrer
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+} @else {
+  <p class="loading-message">Chargement des informations du devoir...</p>
+}

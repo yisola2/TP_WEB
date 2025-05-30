@@ -1,46 +1,57 @@
-<mat-horizontal-stepper [linear]="true" #stepper>
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Informations générales</ng-template>
-      <mat-form-field>
-        <mat-label>Nom du devoir</mat-label>
-        <input matInput formControlName="nom" required>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Date de rendu</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="dateDeRendu" required>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Suivant</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Matière</ng-template>
-      <mat-form-field>
-        <mat-label>Matière</mat-label>
-        <mat-select formControlName="matiere" required>
-          <mat-option *ngFor="let mat of matieres" [value]="mat">{{mat}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Précédent</button>
-        <button mat-button matStepperNext>Suivant</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Validation</ng-template>
-    <p>Récapitulatif :</p>
-    <p>Nom : {{firstFormGroup.value.nom}}</p>
-    <p>Date de rendu : {{firstFormGroup.value.dateDeRendu | date}}</p>
-    <p>Matière : {{secondFormGroup.value.matiere}}</p>
-    <div>
-      <button mat-button matStepperPrevious>Précédent</button>
-      <button mat-raised-button color="primary" (click)="onSubmit()">Ajouter</button>
-    </div>
-  </mat-step>
-</mat-horizontal-stepper>
+<div class="add-assignment-container">
+  <h2 class="page-title">Ajouter un Nouveau Devoir</h2>
+  <mat-card class="stepper-card">
+    <mat-card-content>
+      <mat-horizontal-stepper [linear]="true" #stepper class="custom-stepper">
+        <mat-step [stepControl]="firstFormGroup">
+          <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Informations Générales</ng-template>
+            <mat-form-field appearance="outline">
+              <mat-label>Nom du devoir</mat-label>
+              <input matInput formControlName="nom" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Date de rendu</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="dateDeRendu" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <div class="stepper-buttons">
+              <button mat-flat-button color="primary" matStepperNext>Suivant</button>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+          <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Matière et Auteur</ng-template>
+            <mat-form-field appearance="outline">
+              <mat-label>Matière</mat-label>
+              <mat-select formControlName="matiere" required>
+                <mat-option *ngFor="let mat of matieres" [value]="mat">{{mat}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="stepper-buttons">
+              <button mat-button matStepperPrevious>Précédent</button>
+              <button mat-flat-button color="primary" matStepperNext>Suivant</button>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Validation et Récapitulatif</ng-template>
+          <div class="recap-section">
+            <h3>Récapitulatif :</h3>
+            <p><strong>Nom du devoir :</strong> {{firstFormGroup.value.nom || '-'}}</p>
+            <p><strong>Date de rendu :</strong> {{(firstFormGroup.value.dateDeRendu | date:'dd/MM/yyyy') || '-'}}</p>
+            <p><strong>Matière :</strong> {{secondFormGroup.value.matiere || '-'}}</p>
+          </div>
+          <div class="stepper-buttons">
+            <button mat-button matStepperPrevious>Précédent</button>
+            <button mat-flat-button color="accent" (click)="onSubmit()">
+              <mat-icon>add_circle_outline</mat-icon> Ajouter le Devoir
+            </button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </mat-card-content>
+  </mat-card>
+</div>

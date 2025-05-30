@@ -1,48 +1,38 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SubmittedDirective } from  '../../shared/submitted.directive';
-import { Assignment } from '../assignment.model';
-
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { AssignmentDetailComponent } from '../assignment-detail/assignment-detail.component';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatNativeDateModule } from '@angular/material/core';
-
-import { MatListModule } from '@angular/material/list';
-import { MatListItem } from '@angular/material/list';
-
-import { Router, RouterModule } from '@angular/router';
-import { RouterLink } from '@angular/router';
-import { RouterOutlet } from '@angular/router';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AssignmentsService } from '../../shared/assignments.service';
-import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
-import { MatStepperModule } from '@angular/material/stepper';
+import { Assignment } from '../assignment.model';
+
 
 @Component({
   selector: 'app-add-assignment',
   standalone: true,
   imports: [
-    CommonModule, 
-    ReactiveFormsModule, 
-    MatButtonModule, 
-    MatInputModule, 
-    MatDatepickerModule, 
-    MatFormFieldModule, 
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
     MatInputModule,
-    MatDividerModule, 
     MatDatepickerModule,
+    MatFormFieldModule,
     MatNativeDateModule,
-    MatListModule, 
-    RouterModule, 
-    MatSelectModule, 
+    MatSelectModule,
     MatOptionModule,
-    MatStepperModule
+    MatStepperModule,
+    MatCardModule,
+    MatIconModule
   ],
   providers: [],
   templateUrl: './add-assignment.component.html',
@@ -51,12 +41,11 @@ import { MatStepperModule } from '@angular/material/stepper';
 export class AddAssignmentComponent {
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
-  
-  // Pour la liste des matières (exemple simple)
+
   matieres = ['Maths', 'Physique', 'Anglais', 'Base de données', 'Technologies Web', 'Grails'];
 
   constructor(
-    private assignmentsService: AssignmentsService, 
+    private assignmentsService: AssignmentsService,
     private router: Router,
     private _formBuilder: FormBuilder
   ) {
@@ -71,20 +60,19 @@ export class AddAssignmentComponent {
 
   onSubmit(){
     if (this.firstFormGroup.invalid || this.secondFormGroup.invalid) {
-      return; // Empêche la soumission si les formulaires ne sont pas valides
+      return;
     }
 
     const generatedId = Math.floor(Math.random() * 1000000);
     const newAssignment = new Assignment();
     newAssignment.id = generatedId;
-    newAssignment.name = this.firstFormGroup.value.nom; 
-    newAssignment.dueDate = this.firstFormGroup.value.dateDeRendu; 
+    newAssignment.name = this.firstFormGroup.value.nom;
+    newAssignment.dueDate = this.firstFormGroup.value.dateDeRendu;
     newAssignment.postedOn = new Date();
     newAssignment.submitted = false;
-    
-    // Pour la matière, on prend la valeur simple du select
-    newAssignment.matiere = { nom: this.secondFormGroup.value.matiere }; 
-    
+
+    newAssignment.matiere = { nom: this.secondFormGroup.value.matiere };
+
     this.assignmentsService.addAssignment(newAssignment)
       .subscribe({
         next: (message) => {

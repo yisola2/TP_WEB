@@ -1,5 +1,139 @@
-.form{
-    display: flex;
-    flex-direction: column;
-    margin: 5px;
+.edit-assignment-container {
+  padding: 24px;
+  max-width: 700px;
+  margin: 20px auto;
+  background-color: #f8f9fa;
+}
+
+.page-title {
+  color: #202124;
+  font-size: 1.8em;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.edit-form-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+}
+
+.edit-form-card mat-card-content {
+  padding: 24px 30px;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edit-form mat-form-field {
+  width: 100%;
+}
+
+.matiere-details-preview {
+  padding: 12px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  margin: 8px 0 16px 0;
+  border: 1px solid #e5e7eb;
+}
+
+.matiere-details-preview h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1em;
+  font-weight: 500;
+  color: #374151;
+}
+
+.matiere-details-preview img {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.matiere-image-preview {
+  max-width: 80px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+.prof-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  color: #4b5563;
+}
+
+.prof-photo-preview {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.action-buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.save-button {
+  background-color: #FFC107;
+  color: #202124;
+  padding: 10px 24px;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.save-button mat-icon {
+  margin-right: 8px;
+}
+
+.save-button:hover {
+  background-color: #ffca2c;
+}
+
+.save-button:disabled {
+  background-color: rgba(0,0,0,.12) !important;
+  color: rgba(0,0,0,.38) !important;
+}
+
+.loading-message {
+  text-align: center;
+  font-size: 1.1em;
+  color: #6c757d;
+  padding: 40px 20px;
+}
+
+:host ::ng-deep .mat-mdc-form-field .mdc-text-field--outlined .mdc-notched-outline > * {
+    border-color: #d1d5db !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mdc-text-field--outlined .mdc-notched-outline > * {
+    border-color: #FFC107 !important;
+    border-width: 2px !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
+  color: #FFC107 !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field-label {
+  color: #6b7280 !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field input.mat-mdc-input-element,
+:host ::ng-deep .mat-mdc-form-field textarea.mat-mdc-input-element,
+:host ::ng-deep .mat-mdc-select-value {
+  color: #111827 !important;
+}
+
+:host ::ng-deep .mat-mdc-select-arrow svg {
+    fill: #6b7280 !important;
 }

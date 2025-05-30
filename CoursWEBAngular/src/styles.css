@@ -1,4 +1,26 @@
-@import '@angular/material/prebuilt-themes/rose-red.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
-html, body { height: 100%; }
-body { margin: 20 ; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fa;
+  color: #343a40;
+  min-height: 100vh;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.mat-mdc-form-field-error {
+  font-size: 0.8em;
+  padding-top: 5px;
+}
+
+.active-link {
+  font-weight: bold;
+  color: #FFC107 !important;
+}

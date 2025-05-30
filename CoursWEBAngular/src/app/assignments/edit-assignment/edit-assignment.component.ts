@@ -1,38 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { Router } from '@angular/router';
+import { provideNativeDateAdapter, MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card'; // Ajouté
+import { MatIconModule } from '@angular/material/icon'; // Ajouté
+
 import { AssignmentsService } from '../../shared/assignments.service';
 import { Assignment } from '../assignment.model';
-import { ActivatedRoute } from '@angular/router';
-import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
- selector: 'app-edit-assignment',
- standalone: true,
- providers: [provideNativeDateAdapter()],
- imports: [
-   CommonModule,
-   FormsModule,
-   MatInputModule,
-   MatFormFieldModule,
-   MatDatepickerModule,
-   MatButtonModule,
-   MatSelectModule,
-   MatOptionModule,
- ],
- templateUrl: './edit-assignment.component.html',
- styleUrl: './edit-assignment.component.css',
+  selector: 'app-edit-assignment',
+  standalone: true,
+  providers: [provideNativeDateAdapter()],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatCardModule,    // Ajouté
+    MatIconModule     // Ajouté
+  ],
+  templateUrl: './edit-assignment.component.html',
+  styleUrl: './edit-assignment.component.css',
 })
 export class EditAssignmentComponent implements OnInit{
   assignment: Assignment | undefined;
-  // Champs de formulaire
   assignmentName = '';
   assignmentDueDate?: Date = undefined;
   auteurNom = '';
@@ -47,7 +50,7 @@ export class EditAssignmentComponent implements OnInit{
     { nom: 'Grails', image: 'assets/grails.png', prof: { nom: 'Mme Leroy', photo: 'assets/leroy.png' } }
   ];
 
-  constructor(private assignmentsServises: AssignmentsService, 
+  constructor(private assignmentsServises: AssignmentsService,
     private route:ActivatedRoute,
     private router:Router) {}
 
@@ -72,11 +75,6 @@ export class EditAssignmentComponent implements OnInit{
         }
       }
     });
-
-    console.log("Query Params :");
-    console.log(this.route.snapshot.queryParams);
-    console.log("Fragments :");
-    console.log(this.route.snapshot.fragment);
   }
 
   onSaveAssignment() {
@@ -97,10 +95,7 @@ export class EditAssignmentComponent implements OnInit{
     this.assignmentsServises
       .updateAssignment(this.assignment)
       .subscribe((reponse) => {
-        console.log(reponse.message);
         this.router.navigate(['/home']);
       });
   }
 }
- 
- 

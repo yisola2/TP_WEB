@@ -1,56 +1,104 @@
-<mat-card *ngIf="assignmentTransmis()">
-  <mat-card-header>
-    <mat-card-title>{{assignmentTransmis()?.name}}</mat-card-title>
-    <mat-card-subtitle>Date : {{assignmentTransmis()?.dueDate | date:'dd/MM/yyyy'}}</mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <div>
-        <img *ngIf="assignmentTransmis()?.auteur?.photo" [src]="assignmentTransmis()?.auteur?.photo" alt="Photo élève" width="60" style="border-radius:50%">
-        <div><strong>Auteur :</strong> {{assignmentTransmis()?.auteur?.nom}}</div>
-      </div>
-      <div>
-        <img *ngIf="assignmentTransmis()?.matiere?.image" [src]="assignmentTransmis()?.matiere?.image" alt="Image matière" width="60">
-        <div><strong>Matière :</strong> {{assignmentTransmis()?.matiere?.nom}}</div>
-      </div>
-      <div>
-        <img *ngIf="assignmentTransmis()?.matiere?.prof?.photo" [src]="assignmentTransmis()?.matiere?.prof?.photo" alt="Photo prof" width="60" style="border-radius:50%">
-        <div><strong>Prof :</strong> {{assignmentTransmis()?.matiere?.prof?.nom}}</div>
-      </div>
-    </div>
-    <div style="margin-top: 16px;">
-      <strong>Note :</strong> {{assignmentTransmis()?.note}} / 20
-    </div>
-    <div style="margin-top: 8px;">
-      <strong>Remarques :</strong> {{assignmentTransmis()?.remarques}}
-    </div>
-    <div style="margin-top: 8px;">
-      <strong>Statut :</strong>
-      <span [ngClass]="assignmentTransmis()?.submitted ? 'submitted' : 'nonsubmitted'">
-        <mat-icon color="primary">{{assignmentTransmis()?.submitted ? 'check_circle' : 'hourglass_empty'}}</mat-icon>
-        {{assignmentTransmis()?.submitted ? 'Rendu' : 'À rendre'}}
-      </span>
-    </div>
-    <div>
-      <strong>Créé le :</strong> {{assignmentTransmis()?.postedOn | date:'dd/MM/yyyy'}}
-    </div>
-  </mat-card-content>
-  <mat-card-actions id="bottom">
-    <ng-container *ngIf="assignmentTransmis() && !assignmentTransmis()?.submitted && !isAdmin()">
-      <mat-checkbox (change)="onAssignmentRendu()">Assignment submitted</mat-checkbox>
-    </ng-container>
-    <button mat-stroked-button color="primary" (click)="onClickEdit()" [disabled]="!isAdmin()">Edit</button>
-    <button mat-raised-button color="warn" (click)="confirmDelete()" [disabled]="!isAdmin()">Delete</button>
-  </mat-card-actions>
-  <ng-container *ngIf="assignmentTransmis() as assignment">
-    <div *ngIf="isAdmin()" style="margin-top: 16px;">
-      <mat-form-field>
-        <input matInput type="number" min="0" max="20" placeholder="Note sur 20" [(ngModel)]="assignment.note">
-      </mat-form-field>
-      <mat-form-field>
-        <textarea matInput placeholder="Remarques" [(ngModel)]="assignment.remarques"></textarea>
-      </mat-form-field>
-      <button mat-raised-button color="primary" (click)="onSaveCorrection()">Enregistrer la correction</button>
-    </div>
-  </ng-container>
-</mat-card>
+<div class="detail-page-container">
+  @if (assignmentTransmis(); as assignment) {
+    <mat-card class="detail-card">
+      <mat-card-header class="detail-card-header">
+        <mat-card-title>{{assignment.name}}</mat-card-title>
+        <mat-card-subtitle>Date limite : {{assignment.dueDate | date:'dd/MM/yyyy'}}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="detail-card-content">
+        <div class="info-grid">
+          <div class="info-item">
+            @if (assignment.auteur?.photo) {
+              <img [src]="assignment.auteur?.photo" alt="Photo {{assignment.auteur?.nom}}" class="info-avatar">
+            } @else {
+              <mat-icon class="info-avatar-placeholder">account_circle</mat-icon>
+            }
+            <div class="info-text">
+              <span class="info-label">Auteur :</span>
+              <span>{{assignment.auteur?.nom}}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            @if (assignment.matiere?.image) {
+              <img [src]="assignment.matiere?.image" alt="Image {{assignment.matiere?.nom}}" class="info-image">
+            }
+            <div class="info-text">
+              <span class="info-label">Matière :</span>
+              <span>{{assignment.matiere?.nom}}</span>
+            </div>
+          </div>
+
+          @if (assignment.matiere?.prof?.nom) {
+            <div class="info-item">
+              @if (assignment.matiere?.prof?.photo) {
+                <img [src]="assignment.matiere?.prof?.photo" alt="Photo {{assignment.matiere?.prof?.nom}}" class="info-avatar">
+              } @else {
+                 <mat-icon class="info-avatar-placeholder">school</mat-icon>
+              }
+              <div class="info-text">
+                <span class="info-label">Professeur :</span>
+                <span>{{assignment.matiere?.prof?.nom}}</span>
+              </div>
+            </div>
+          }
+        </div>
+
+        <mat-divider class="section-divider"></mat-divider>
+
+        <div class="details-section">
+          <p><span class="info-label">Note obtenue :</span> {{assignment.note !== undefined && assignment.note !== null ? assignment.note + ' / 20' : 'Non noté'}}</p>
+          <p><span class="info-label">Remarques :</span> {{assignment.remarques || 'Aucune remarque'}}</p>
+          <p><span class="info-label">Statut :</span>
+            <span class="status-badge" [class.submitted-badge]="assignment.submitted" [class.notsubmitted-badge]="!assignment.submitted">
+              <mat-icon>{{assignment.submitted ? 'check_circle' : 'hourglass_empty'}}</mat-icon>
+              {{assignment.submitted ? 'Rendu' : 'À rendre'}}
+            </span>
+          </p>
+          <p><span class="info-label">Créé le :</span> {{assignment.postedOn | date:'dd/MM/yyyy'}}</p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="detail-card-actions">
+        @if (!assignment.submitted && !isAdmin()) {
+          <mat-checkbox (change)="onAssignmentRendu()" color="primary" class="submit-checkbox">Marquer comme rendu</mat-checkbox>
+        }
+        <div class="action-buttons">
+          @if (isAdmin()) {
+            <button mat-stroked-button color="primary" (click)="onClickEdit()">
+              <mat-icon>edit</mat-icon> Modifier
+            </button>
+            <button mat-flat-button color="warn" (click)="confirmDelete()">
+              <mat-icon>delete</mat-icon> Supprimer
+            </button>
+          }
+        </div>
+      </mat-card-actions>
+
+      @if (isAdmin()) {
+        <mat-divider class="section-divider"></mat-divider>
+        <div class="admin-correction-section">
+          <h3>Noter et commenter</h3>
+          <mat-form-field appearance="outline" class="note-field">
+            <mat-label>Note sur 20</mat-label>
+            <input matInput type="number" min="0" max="20" step="0.1" placeholder="Ex: 15" [(ngModel)]="assignment.note">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="remarques-field">
+            <mat-label>Remarques du professeur</mat-label>
+            <textarea matInput placeholder="Ajouter des remarques constructives..." [(ngModel)]="assignment.remarques" rows="4"></textarea>
+          </mat-form-field>
+          <div class="save-button-container">
+            <button mat-flat-button (click)="onSaveCorrection()" class="save-correction-button">
+              <mat-icon>save</mat-icon> Enregistrer la Correction
+            </button>
+          </div>
+        </div>
+      }
+    </mat-card>
+  } @else {
+    <p class="no-assignment-message">
+      Aucun détail d'assignment à afficher.
+    </p>
+  }
+</div>

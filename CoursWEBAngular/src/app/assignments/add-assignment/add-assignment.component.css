@@ -1,10 +1,143 @@
-.form{
-    display: flex;
-    flex-direction: column;
-    margin: 5px;
+.add-assignment-container {
+  padding: 24px;
+  max-width: 900px;
+  margin: 20px auto;
+  background-color: #f8f9fa;
 }
-#bottom{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+
+.page-title {
+  color: #202124;
+  font-size: 1.8em;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.stepper-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  padding: 10px;
+}
+
+.custom-stepper {
+  background-color: transparent;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.stepper-buttons {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.stepper-buttons button[mat-button] {
+  color: #495057;
+}
+
+.stepper-buttons button[mat-flat-button][color="primary"] {
+  background-color: #FFC107;
+  color: #202124;
+}
+.stepper-buttons button[mat-flat-button][color="primary"]:hover {
+  background-color: #ffca2c;
+}
+
+.stepper-buttons button[mat-flat-button][color="accent"] {
+  background-color: #007bff;
+  color: #ffffff;
+}
+.stepper-buttons button[mat-flat-button][color="accent"]:hover {
+  background-color: #0069d9;
+}
+.stepper-buttons button[mat-flat-button][color="accent"] mat-icon {
+    margin-right: 6px;
+    color: #ffffff;
+}
+
+
+.recap-section {
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #e9ecef;
+}
+
+.recap-section h3 {
+  font-size: 1.2em;
+  color: #343a40;
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.recap-section p {
+  font-size: 1em;
+  color: #495057;
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+.recap-section p strong {
+  color: #343a40;
+}
+
+:host ::ng-deep .mat-horizontal-stepper-header-container {
+  background-color: #f1f3f5;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 20px;
+}
+
+:host ::ng-deep .mat-step-header {
+  padding: 16px;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-icon-selected,
+:host ::ng-deep .mat-step-header .mat-step-icon-state-done,
+:host ::ng-deep .mat-step-header .mat-step-icon-state-edit {
+  background-color: #FFC107 !important;
+  color: #202124 !important;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-label.mat-step-label-active,
+:host ::ng-deep .mat-step-header .mat-step-label.mat-step-label-done {
+  color: #202124 !important;
+  font-weight: 500;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-label {
+  color: #6c757d;
+}
+
+:host ::ng-deep .mat-mdc-form-field .mdc-text-field--outlined .mdc-notched-outline > * {
+    border-color: #ced4da !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mdc-text-field--outlined .mdc-notched-outline > * {
+    border-color: #FFC107 !important;
+    border-width: 2px !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-form-field-label,
+:host ::ng-deep .mat-mdc-form-field:not(.mat-form-field-no-animations) .mdc-floating-label--float-above {
+  color: #FFC107 !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field-label,
+:host ::ng-deep .mat-mdc-select-value,
+:host ::ng-deep .mat-mdc-form-field input.mat-mdc-input-element {
+  color: #495057 !important;
+}
+
+:host ::ng-deep .mat-mdc-select-arrow svg {
+    fill: #495057 !important;
+}
+
+:host ::ng-deep .mat-datepicker-toggle .mat-icon {
+    fill: #495057 !important;
 }
