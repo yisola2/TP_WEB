@@ -72,8 +72,6 @@ export class AddAssignmentComponent {
       image: matiereObj.image,
       prof: matiereObj.prof
     } : { nom: this.matiereNom };
-    newAssignment.note = this.note ?? 0;
-    newAssignment.remarques = this.remarques;
     
     this.assignmentsService.addAssignment(newAssignment)
       .subscribe({

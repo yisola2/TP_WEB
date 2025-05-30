@@ -9,6 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/auth.service';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-assignment-detail',
@@ -18,7 +20,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule, 
     MatCheckboxModule, 
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    FormsModule
   ],
   templateUrl: './assignment-detail.component.html',
   styleUrl: './assignment-detail.component.css'
@@ -92,5 +96,20 @@ export class AssignmentDetailComponent implements OnInit {
 
   isAdmin(): boolean {
     return this.authService.isAdmin();
+  }
+
+  onSaveCorrection() {
+    if (this.assignmentTransmis()) {
+      this.assignmentsServises.updateAssignment(this.assignmentTransmis()!)
+        .subscribe({
+          next: (response) => {
+            console.log('Correction enregistrée:', response);
+            // Optionnel : afficher une notification ou recharger les données
+          },
+          error: (error) => {
+            console.error('Erreur lors de la sauvegarde de la correction:', error);
+          }
+        });
+    }
   }
 }

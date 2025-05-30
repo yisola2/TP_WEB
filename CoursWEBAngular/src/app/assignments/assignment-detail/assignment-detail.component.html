@@ -36,10 +36,21 @@
     </div>
   </mat-card-content>
   <mat-card-actions id="bottom">
-    <ng-container *ngIf="assignmentTransmis() && !assignmentTransmis()?.submitted">
+    <ng-container *ngIf="assignmentTransmis() && !assignmentTransmis()?.submitted && !isAdmin()">
       <mat-checkbox (change)="onAssignmentRendu()">Assignment submitted</mat-checkbox>
     </ng-container>
     <button mat-stroked-button color="primary" (click)="onClickEdit()" [disabled]="!isAdmin()">Edit</button>
     <button mat-flat-button color="warn" (click)="confirmDelete()" [disabled]="!isAdmin()">Delete</button>
   </mat-card-actions>
+  <ng-container *ngIf="assignmentTransmis() as assignment">
+    <div *ngIf="isAdmin()" style="margin-top: 16px;">
+      <mat-form-field>
+        <input matInput type="number" min="0" max="20" placeholder="Note sur 20" [(ngModel)]="assignment.note">
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput placeholder="Remarques" [(ngModel)]="assignment.remarques"></textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="onSaveCorrection()">Enregistrer la correction</button>
+    </div>
+  </ng-container>
 </mat-card>
