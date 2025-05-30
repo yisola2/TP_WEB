@@ -40,11 +40,7 @@ export class AssignmentDetailComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
     this.assignmentsServises.getAssignment(id).subscribe(assignment => {
       
-      this.assignmentTransmis.set(
-        assignment
-          ? { ...assignment, submitted: assignment.submitted === true || String(assignment.submitted) === 'true' }
-          : null
-      );
+      this.assignmentTransmis.set(assignment ?? null);
     });
   }
 
