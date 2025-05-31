@@ -17,16 +17,6 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Auteur (élève)</mat-label>
-            <input matInput placeholder="Nom de l'auteur" [(ngModel)]="auteurNom" name="auteurNom" required>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Photo élève (URL)</mat-label>
-            <input matInput placeholder="URL de la photo" [(ngModel)]="auteurPhoto" name="auteurPhoto">
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
             <mat-label>Matière</mat-label>
             <mat-select [(ngModel)]="matiereNom" name="matiereNom" required>
               @for (m of matieres; track m.nom) {

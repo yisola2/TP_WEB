@@ -39,8 +39,6 @@ export class EditAssignmentComponent implements OnInit{
   assignment: Assignment | undefined;
   assignmentName = '';
   assignmentDueDate?: Date = undefined;
-  auteurNom = '';
-  auteurPhoto = '';
   matiereNom = '';
   note: number | null = null;
   remarques = '';
@@ -66,8 +64,6 @@ export class EditAssignmentComponent implements OnInit{
       if (assignment) {
         this.assignmentName = assignment.name;
         this.assignmentDueDate = assignment.dueDate;
-        this.auteurNom = assignment.auteur?.nom || '';
-        this.auteurPhoto = assignment.auteur?.photo || '';
         this.matiereNom = assignment.matiere?.nom || '';
         this.note = assignment.note;
         this.remarques = assignment.remarques || '';
@@ -81,9 +77,9 @@ export class EditAssignmentComponent implements OnInit{
   onSaveAssignment() {
     if (!this.assignment) return;
     if (this.assignmentName == '' || this.assignmentDueDate === undefined) return;
+    
     this.assignment.name = this.assignmentName;
     this.assignment.dueDate = this.assignmentDueDate;
-    this.assignment.auteur = { nom: this.auteurNom, photo: this.auteurPhoto };
     
     // Utilisation du service pour récupérer la matière complète
     const matiereObj = this.matiereSelectionnee;
@@ -95,7 +91,7 @@ export class EditAssignmentComponent implements OnInit{
     
     this.assignment.note = this.note ?? 0;
     this.assignment.remarques = this.remarques;
-    this.assignment.submitted = this.assignment.submitted === true || String(this.assignment.submitted) === 'true';
+    
     this.assignmentsServises
       .updateAssignment(this.assignment)
       .subscribe((reponse) => {
