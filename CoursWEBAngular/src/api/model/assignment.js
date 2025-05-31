@@ -9,7 +9,7 @@ let AssignmentSchema = Schema({
     dueDate: {
         type: Date,
         set: function(value) {
-            // Handle MongoDB date format
+            // Handle MongoDB date format from Mockaroo
             if (value && typeof value === 'object' && value.$date) {
                 return new Date(value.$date);
             }
@@ -19,11 +19,19 @@ let AssignmentSchema = Schema({
     },
     postedOn: {
         type: Date,
-        default: Date.now
+        set: function(value) {
+            // Handle MongoDB date format from Mockaroo
+            if (value && typeof value === 'object' && value.$date) {
+                return new Date(value.$date);
+            }
+            // Handle regular date strings/Date objects
+            return value;
+        }
     },
     submittedOn: {
         type: Date,
         set: function(value) {
+            // Handle MongoDB date format from Mockaroo
             if (value && typeof value === 'object' && value.$date) {
                 return new Date(value.$date);
             }
@@ -38,10 +46,12 @@ let AssignmentSchema = Schema({
     },
     matiere: {
         nom: String,
-        image: String, // URL ou chemin de l'image
+        // Les images et infos prof seront gérées côté frontend via MatiereService
+        // Cela simplifie la génération de données et garantit la cohérence
+        image: String, // Optionnel, pour compatibilité avec données existantes
         prof: {
-            nom: String,
-            photo: String // URL ou chemin de la photo du prof
+            nom: String, // Optionnel, pour compatibilité avec données existantes
+            photo: String // Optionnel, pour compatibilité avec données existantes
         }
     },
     note: Number, // sur 20

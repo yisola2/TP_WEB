@@ -13,53 +13,255 @@
   text-align: center;
 }
 
+.stepper-container {
+  padding: 24px;
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #f8f9fa;
+}
+
 .stepper-card {
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-  padding: 10px;
 }
 
-.custom-stepper {
-  background-color: transparent;
+.stepper-card .mat-mdc-card-header {
+  background-color: #FFC107;
+  color: #202124;
+  padding: 20px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
-mat-form-field {
+.stepper-card .mat-mdc-card-title {
+  font-size: 1.5em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stepper-card .mat-mdc-card-subtitle {
+  font-size: 0.95em;
+  color: #424242;
+  margin-top: 8px;
+}
+
+.stepper-card .mat-mdc-card-content {
+  padding: 24px;
+}
+
+/* Styles pour le stepper */
+:host ::ng-deep .mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-icon {
+  background-color: #FFC107;
+  color: #202124;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-icon-selected {
+  background-color: #FFC107;
+  color: #202124;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-icon-state-done {
+  background-color: #28a745;
+  color: white;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-label {
+  color: #495057;
+  font-weight: 500;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-label.mat-step-label-selected {
+  color: #FFC107;
+  font-weight: 600;
+}
+
+/* Contenu des étapes */
+.step-content {
+  padding: 24px 0;
+  min-height: 200px;
+}
+
+.full-width {
   width: 100%;
   margin-bottom: 16px;
 }
 
-.stepper-buttons {
-  margin-top: 24px;
+.step-description {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  background-color: #e3f2fd;
+  padding: 12px;
+  border-radius: 8px;
+  color: #0d47a1;
+  margin-bottom: 20px;
+}
+
+.step-description mat-icon {
+  color: #2196F3;
+}
+
+/* Actions des étapes */
+.step-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #e9ecef;
+}
+
+.step-actions button {
+  font-weight: 500;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
   gap: 8px;
 }
 
-.stepper-buttons button[mat-button] {
-  color: #495057;
-}
-
-.stepper-buttons button[mat-flat-button][color="primary"] {
+.step-actions button[mat-raised-button] {
   background-color: #FFC107;
   color: #202124;
 }
-.stepper-buttons button[mat-flat-button][color="primary"]:hover {
+
+.step-actions button[mat-raised-button]:hover {
   background-color: #ffca2c;
 }
 
-.stepper-buttons button[mat-flat-button][color="accent"] {
-  background-color: #007bff;
-  color: #ffffff;
-}
-.stepper-buttons button[mat-flat-button][color="accent"]:hover {
-  background-color: #0069d9;
-}
-.stepper-buttons button[mat-flat-button][color="accent"] mat-icon {
-    margin-right: 6px;
-    color: #ffffff;
+.step-actions button[color="accent"] {
+  background-color: #28a745;
+  color: white;
 }
 
+.step-actions button[color="accent"]:hover {
+  background-color: #218838;
+}
+
+.step-actions button[mat-stroked-button] {
+  border-color: #6c757d;
+  color: #6c757d;
+}
+
+.step-actions button[mat-stroked-button]:hover {
+  background-color: rgba(108, 117, 125, 0.04);
+}
+
+/* Prévisualisation de la matière */
+.matiere-preview {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.matiere-preview h4 {
+  margin: 0 0 16px 0;
+  color: #495057;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.matiere-info {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.matiere-details {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.matiere-image {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.matiere-text h5 {
+  margin: 0 0 8px 0;
+  color: #343a40;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.prof-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6c757d;
+  margin: 0;
+  font-size: 0.95em;
+}
+
+.prof-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stepper-container {
+    padding: 16px;
+  }
+  
+  .stepper-card .mat-mdc-card-content {
+    padding: 16px;
+  }
+  
+  .step-content {
+    padding: 16px 0;
+    min-height: 150px;
+  }
+  
+  .step-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .step-actions button {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .matiere-details {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .matiere-image {
+    width: 120px;
+    height: 80px;
+  }
+}
+
+/* Styles pour les form fields */
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-appearance-outline .mdc-notched-outline > * {
+  border-color: #dee2e6;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-appearance-outline.mat-focused .mdc-notched-outline > * {
+  border-color: #FFC107;
+  border-width: 2px;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-appearance-outline.mat-focused .mat-mdc-floating-label {
+  color: #FFC107;
+}
 
 .recap-section {
   padding: 16px;

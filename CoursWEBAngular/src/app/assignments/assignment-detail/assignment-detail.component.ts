@@ -10,8 +10,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatInputModule } from '@angular/material/input';
 
 import { AssignmentsService } from '../../shared/assignments.service';
+import { MatiereService } from '../../shared/matiere.service';
 import { AuthService } from '../../shared/auth.service';
 
 @Component({
@@ -25,7 +27,8 @@ import { AuthService } from '../../shared/auth.service';
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
-    MatDividerModule
+    MatDividerModule,
+    MatInputModule
   ],
   templateUrl: './assignment-detail.component.html',
   styleUrl: './assignment-detail.component.css'
@@ -33,10 +36,13 @@ import { AuthService } from '../../shared/auth.service';
 export class AssignmentDetailComponent implements OnInit {
   assignmentTransmis = signal<Assignment | null>(null);
 
-  constructor(private assignmentsServises: AssignmentsService,
-              private authService: AuthService,
-              private route: ActivatedRoute,
-              private router: Router) {}
+  constructor(
+    private assignmentsServises: AssignmentsService,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private matiereService: MatiereService
+  ) {}
 
   ngOnInit() {
     this.getAssignment();
@@ -45,8 +51,32 @@ export class AssignmentDetailComponent implements OnInit {
   private getAssignment() {
     const id = this.route.snapshot.params['id'];
     this.assignmentsServises.getAssignment(id).subscribe(assignment => {
-      this.assignmentTransmis.set(assignment ?? null);
+      if (assignment) {
+        // Enrichir l'assignment avec les données des matières du service
+        const enrichedAssignment = this.enrichAssignmentWithMatiereData(assignment);
+        this.assignmentTransmis.set(enrichedAssignment);
+      } else {
+        this.assignmentTransmis.set(null);
+      }
     });
+  }
+
+  // Méthode pour enrichir un assignment avec les données des matières
+  private enrichAssignmentWithMatiereData(assignment: Assignment): Assignment {
+    if (assignment.matiere?.nom) {
+      const matiereDetails = this.matiereService.getMatiereByNom(assignment.matiere.nom);
+      if (matiereDetails) {
+        assignment.matiere = {
+          ...assignment.matiere,
+          image: matiereDetails.image,
+          prof: {
+            nom: matiereDetails.prof.nom,
+            photo: matiereDetails.prof.photo
+          }
+        };
+      }
+    }
+    return assignment;
   }
 
   onClickEdit(){
@@ -101,6 +131,7 @@ export class AssignmentDetailComponent implements OnInit {
       this.assignmentsServises.updateAssignment(this.assignmentTransmis()!)
         .subscribe({
           next: (response) => {
+            console.log('Correction sauvegardée avec succès');
           },
           error: (error) => {
             console.error('Erreur lors de la sauvegarde de la correction:', error);

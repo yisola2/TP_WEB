@@ -13,6 +13,7 @@ import { MatCardModule } from '@angular/material/card'; // Ajouté
 import { MatIconModule } from '@angular/material/icon'; // Ajouté
 
 import { AssignmentsService } from '../../shared/assignments.service';
+import { MatiereService, Matiere } from '../../shared/matiere.service';
 import { Assignment } from '../assignment.model';
 
 @Component({
@@ -44,18 +45,18 @@ export class EditAssignmentComponent implements OnInit{
   note: number | null = null;
   remarques = '';
 
-  matieres = [
-    { nom: 'Base de données', image: 'assets/bdd.png', prof: { nom: 'Mme Dupont', photo: 'assets/dupont.png' } },
-    { nom: 'Technologies Web', image: 'assets/web.png', prof: { nom: 'M. Martin', photo: 'assets/martin.png' } },
-    { nom: 'Grails', image: 'assets/grails.png', prof: { nom: 'Mme Leroy', photo: 'assets/leroy.png' } }
-  ];
+  // Récupération de la liste des matières depuis le service
+  matieres: Matiere[] = this.matiereService.getMatieres();
 
-  constructor(private assignmentsServises: AssignmentsService,
+  constructor(
+    private assignmentsServises: AssignmentsService,
     private route:ActivatedRoute,
-    private router:Router) {}
+    private router:Router,
+    private matiereService: MatiereService
+  ) {}
 
-  get matiereSelectionnee() {
-    return this.matieres.find(m => m.nom === this.matiereNom);
+  get matiereSelectionnee(): Matiere | undefined {
+    return this.matiereService.getMatiereByNom(this.matiereNom);
   }
 
   ngOnInit(){
@@ -83,12 +84,15 @@ export class EditAssignmentComponent implements OnInit{
     this.assignment.name = this.assignmentName;
     this.assignment.dueDate = this.assignmentDueDate;
     this.assignment.auteur = { nom: this.auteurNom, photo: this.auteurPhoto };
+    
+    // Utilisation du service pour récupérer la matière complète
     const matiereObj = this.matiereSelectionnee;
     this.assignment.matiere = matiereObj ? {
       nom: matiereObj.nom,
       image: matiereObj.image,
       prof: matiereObj.prof
     } : { nom: this.matiereNom };
+    
     this.assignment.note = this.note ?? 0;
     this.assignment.remarques = this.remarques;
     this.assignment.submitted = this.assignment.submitted === true || String(this.assignment.submitted) === 'true';

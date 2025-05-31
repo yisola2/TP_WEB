@@ -1,57 +1,95 @@
-<div class="add-assignment-container">
-  <h2 class="page-title">Ajouter un Nouveau Devoir</h2>
+<div class="stepper-container">
   <mat-card class="stepper-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>add_task</mat-icon>
+        Créer un nouveau devoir
+      </mat-card-title>
+      <mat-card-subtitle>Définissez les consignes du devoir pour vos élèves</mat-card-subtitle>
+    </mat-card-header>
+
     <mat-card-content>
-      <mat-horizontal-stepper [linear]="true" #stepper class="custom-stepper">
+      <mat-stepper [linear]="true" #stepper>
+        
+        <!-- Étape 1: Informations de base -->
         <mat-step [stepControl]="firstFormGroup">
           <form [formGroup]="firstFormGroup">
-            <ng-template matStepLabel>Informations Générales</ng-template>
-            <mat-form-field appearance="outline">
-              <mat-label>Nom du devoir</mat-label>
-              <input matInput formControlName="nom" required>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Date de rendu</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="dateDeRendu" required>
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-            <div class="stepper-buttons">
-              <button mat-flat-button color="primary" matStepperNext>Suivant</button>
+            <ng-template matStepLabel>Informations de base</ng-template>
+            
+            <div class="step-content">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nom du devoir</mat-label>
+                <input matInput formControlName="nom" placeholder="Ex: TP1 - Introduction aux bases de données">
+                <mat-icon matSuffix>assignment</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Date limite de rendu</mat-label>
+                <input matInput [matDatepicker]="picker1" formControlName="dateDeRendu">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="step-actions">
+              <div></div> <!-- Spacer -->
+              <button mat-raised-button matStepperNext color="primary" [disabled]="firstFormGroup.invalid">
+                Suivant
+                <mat-icon>navigate_next</mat-icon>
+              </button>
             </div>
           </form>
         </mat-step>
+
+        <!-- Étape 2: Matière -->
         <mat-step [stepControl]="secondFormGroup">
           <form [formGroup]="secondFormGroup">
-            <ng-template matStepLabel>Matière et Auteur</ng-template>
-            <mat-form-field appearance="outline">
-              <mat-label>Matière</mat-label>
-              <mat-select formControlName="matiere" required>
-                <mat-option *ngFor="let mat of matieres" [value]="mat">{{mat}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <div class="stepper-buttons">
-              <button mat-button matStepperPrevious>Précédent</button>
-              <button mat-flat-button color="primary" matStepperNext>Suivant</button>
+            <ng-template matStepLabel>Matière</ng-template>
+            
+            <div class="step-content">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Matière</mat-label>
+                <mat-select formControlName="matiereNom">
+                  <mat-option *ngFor="let matiere of matieres" [value]="matiere.nom">
+                    {{matiere.nom}}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matSuffix>school</mat-icon>
+              </mat-form-field>
+
+              <!-- Prévisualisation de la matière sélectionnée -->
+              <div *ngIf="matiereSelectionnee" class="matiere-preview">
+                <h4>Détails de la matière :</h4>
+                <div class="matiere-info">
+                  <div class="matiere-details">
+                    <img [src]="matiereSelectionnee.image" [alt]="'Image ' + matiereSelectionnee.nom" class="matiere-image">
+                    <div class="matiere-text">
+                      <h5>{{matiereSelectionnee.nom}}</h5>
+                      <p class="prof-info">
+                        <img [src]="matiereSelectionnee.prof.photo" [alt]="'Photo ' + matiereSelectionnee.prof.nom" class="prof-avatar">
+                        Professeur : {{matiereSelectionnee.prof.nom}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-actions">
+              <button mat-stroked-button matStepperPrevious>
+                <mat-icon>navigate_before</mat-icon>
+                Précédent
+              </button>
+              <button mat-raised-button color="accent" (click)="onSubmit()" 
+                      [disabled]="firstFormGroup.invalid || secondFormGroup.invalid">
+                <mat-icon>save</mat-icon>
+                Créer le devoir
+              </button>
             </div>
           </form>
         </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Validation et Récapitulatif</ng-template>
-          <div class="recap-section">
-            <h3>Récapitulatif :</h3>
-            <p><strong>Nom du devoir :</strong> {{firstFormGroup.value.nom || '-'}}</p>
-            <p><strong>Date de rendu :</strong> {{(firstFormGroup.value.dateDeRendu | date:'dd/MM/yyyy') || '-'}}</p>
-            <p><strong>Matière :</strong> {{secondFormGroup.value.matiere || '-'}}</p>
-          </div>
-          <div class="stepper-buttons">
-            <button mat-button matStepperPrevious>Précédent</button>
-            <button mat-flat-button color="accent" (click)="onSubmit()">
-              <mat-icon>add_circle_outline</mat-icon> Ajouter le Devoir
-            </button>
-          </div>
-        </mat-step>
-      </mat-horizontal-stepper>
+
+      </mat-stepper>
     </mat-card-content>
   </mat-card>
 </div>

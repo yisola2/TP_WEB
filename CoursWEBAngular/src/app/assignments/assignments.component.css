@@ -67,21 +67,37 @@ tr.mat-row:hover {
   transition: background-color 0.2s ease-in-out;
 }
 
-img {
+/* Styles spécifiques pour les images dans le tableau */
+td img {
   vertical-align: middle;
-}
-
-img[alt*="Photo"], img[alt*="matière"] {
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  object-fit: cover;
-  margin-right: 8px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-img[alt*="Image matière"] {
+/* Images des élèves - rondes et petites */
+td img[alt*="Photo"] {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+/* Images des matières - rectangulaires et petites */
+td img[alt*="Image"] {
   border-radius: 4px;
+  width: 40px;
+  height: 28px;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+/* Images des profs - rondes et très petites */
+td img[alt*="prof"], td img[alt*="Prof"] {
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  margin-right: 6px;
 }
 
 .mat-icon-button mat-icon {
@@ -153,9 +169,17 @@ td span[appnotsubmitted] mat-icon {
     padding: 8px 6px;
     font-size: 0.85em;
   }
-  img[alt*="Photo"], img[alt*="matière"] {
-    width: 30px;
-    height: 30px;
+  td img[alt*="Photo"] {
+    width: 28px;
+    height: 28px;
+  }
+  td img[alt*="Image"] {
+    width: 35px;
+    height: 24px;
+  }
+  td img[alt*="prof"], td img[alt*="Prof"] {
+    width: 24px;
+    height: 24px;
   }
 }
 

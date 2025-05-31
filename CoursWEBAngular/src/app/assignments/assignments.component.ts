@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SubmittedDirective } from '../shared/submitted.directive';
 import { Assignment } from './assignment.model';
 import { AssignmentsService } from '../shared/assignments.service';
+import { MatiereService, Matiere } from '../shared/matiere.service';
 import { AuthService } from '../shared/auth.service';
 
 import { FormsModule } from '@angular/forms';
@@ -70,7 +71,11 @@ export class AssignmentsComponent implements OnInit {
   pageSize = 10;
   currentPage = 0;
 
-  constructor (private assignmentsService:AssignmentsService, private authService: AuthService) {}
+  constructor (
+    private assignmentsService:AssignmentsService, 
+    private authService: AuthService,
+    private matiereService: MatiereService
+  ) {}
 
   assignmentDueDate: any;
 
@@ -80,11 +85,34 @@ export class AssignmentsComponent implements OnInit {
     this.getAssignments(1);
   }
   
+  // Méthode pour enrichir les assignments avec les données des matières
+  private enrichAssignmentsWithMatiereData(assignments: Assignment[]): Assignment[] {
+    return assignments.map(assignment => {
+      if (assignment.matiere?.nom) {
+        const matiereDetails = this.matiereService.getMatiereByNom(assignment.matiere.nom);
+        if (matiereDetails) {
+          // Enrichir avec les données du service (priorité sur les données backend)
+          assignment.matiere = {
+            ...assignment.matiere,
+            image: matiereDetails.image,
+            prof: {
+              nom: matiereDetails.prof.nom,
+              photo: matiereDetails.prof.photo
+            }
+          };
+        }
+      }
+      return assignment;
+    });
+  }
+  
   getAssignments(page: number = 1) {
     this.assignmentsService.getAssignmentsWithPagination(page, this.pageSize)
       .subscribe(result => {
         console.log('Pagination result:', result);
-        this.assignments = result.assignments || [];
+        const rawAssignments = result.assignments || [];
+        // Enrichir les assignments avec les données des matières
+        this.assignments = this.enrichAssignmentsWithMatiereData(rawAssignments);
         this.totalAssignments = result.paginator?.totalAssignments || 0;
       });
   }
