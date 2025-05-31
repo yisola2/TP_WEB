@@ -52,7 +52,8 @@ export class LoginComponent {
     this.authService.login(this.username, this.password).subscribe({
       next: (response) => {
         if (this.authService.getToken()) {
-          this.router.navigate(['/']);
+          this.snackbarService.showSuccess('Connexion réussie');
+          setTimeout(() => this.router.navigate(['/']), 1000);
         } else {
           this.error = 'Échec de la connexion. Réponse inattendue.';
           this.snackbarService.showError('Échec de la connexion. Réponse inattendue.');

@@ -146,9 +146,17 @@ export class AssignmentDetailComponent implements OnInit {
 
   onDelete(){
     if (this.assignmentTransmis()) {
-      this.assignmentsServises.deleteAssignment(this.assignmentTransmis()!).subscribe((reponse) => {
-        this.router.navigate(["/home"]);
-      });
+      this.assignmentsServises.deleteAssignment(this.assignmentTransmis()!)
+        .subscribe({
+          next: (response) => {
+            this.snackbarService.showSuccess('Assignment supprimé avec succès');
+            setTimeout(() => this.router.navigate(["/home"]), 1000);
+          },
+          error: (error) => {
+            console.error('Erreur lors de la suppression:', error);
+            this.snackbarService.showError('Erreur lors de la suppression');
+          }
+        });
       this.assignmentTransmis.set(null);
     }
   }

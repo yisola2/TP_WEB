@@ -12,10 +12,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AssignmentsService } from '../../shared/assignments.service';
 import { MatiereService, Matiere } from '../../shared/matiere.service';
 import { Assignment } from '../assignment.model';
+import { SnackbarService } from '../../shared/snackbar.service';
 
 @Component({
   selector: 'app-add-assignment',
@@ -32,7 +34,8 @@ import { Assignment } from '../assignment.model';
     MatOptionModule,
     MatStepperModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule
   ],
   providers: [],
   templateUrl: './add-assignment.component.html',
@@ -49,7 +52,8 @@ export class AddAssignmentComponent {
     private assignmentsService: AssignmentsService,
     private router: Router,
     private _formBuilder: FormBuilder,
-    private matiereService: MatiereService
+    private matiereService: MatiereService,
+    private snackbarService: SnackbarService
   ) {
     // Étape 1 : Informations de base
     this.firstFormGroup = this._formBuilder.group({
@@ -101,11 +105,12 @@ export class AddAssignmentComponent {
     this.assignmentsService.addAssignment(newAssignment)
       .subscribe({
         next: (message) => {
-          console.log('Devoir créé avec succès');
-          this.router.navigate(['/home']);
+          this.snackbarService.showSuccess('Assignment ajouté avec succès');
+          setTimeout(() => this.router.navigate(['/home']), 1000);
         },
         error: (error) => {
           console.error('Error adding assignment:', error);
+          this.snackbarService.showError('Erreur lors de l\'ajout de l\'assignment');
         }
       });
   }
