@@ -76,7 +76,7 @@
         </div>
       </mat-card-actions>
 
-      @if (isAdmin()) {
+      @if (isAdmin() && assignment.submitted) {
         <mat-divider class="section-divider"></mat-divider>
         <div class="admin-correction-section">
           <h3>Noter et commenter</h3>
