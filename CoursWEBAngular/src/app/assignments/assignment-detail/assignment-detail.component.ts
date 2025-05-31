@@ -11,10 +11,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AssignmentsService } from '../../shared/assignments.service';
 import { MatiereService } from '../../shared/matiere.service';
 import { AuthService } from '../../shared/auth.service';
+import { SnackbarService } from '../../shared/snackbar.service';
 
 @Component({
   selector: 'app-assignment-detail',
@@ -28,7 +30,8 @@ import { AuthService } from '../../shared/auth.service';
     MatIconModule,
     MatFormFieldModule,
     MatDividerModule,
-    MatInputModule
+    MatInputModule,
+    MatSnackBarModule
   ],
   templateUrl: './assignment-detail.component.html',
   styleUrl: './assignment-detail.component.css'
@@ -41,7 +44,8 @@ export class AssignmentDetailComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
-    private matiereService: MatiereService
+    private matiereService: MatiereService,
+    private snackbarService: SnackbarService
   ) {}
 
   ngOnInit() {
@@ -117,11 +121,12 @@ export class AssignmentDetailComponent implements OnInit {
         this.assignmentsServises.updateAssignment(updatedAssignment)
           .subscribe({
             next: (response) => {
-              console.log('Devoir marqué comme rendu avec succès', response);
-              this.router.navigate(['/home']);
+              this.snackbarService.showSuccess('Devoir marqué comme rendu avec succès');
+              setTimeout(() => this.router.navigate(['/home']), 1000);
             },
             error: (error) => {
               console.error('Error updating assignment:', error);
+              this.snackbarService.showError('Erreur lors du marquage du devoir comme rendu');
             }
           });
       }
@@ -165,7 +170,7 @@ export class AssignmentDetailComponent implements OnInit {
       // Validation de la note
       if (assignment.note !== undefined && assignment.note !== null) {
         if (assignment.note < 0 || assignment.note > 20) {
-          console.error('La note doit être entre 0 et 20');
+          this.snackbarService.showError('La note doit être comprise entre 0 et 20');
           window.location.reload();
           return;
         }
@@ -174,12 +179,13 @@ export class AssignmentDetailComponent implements OnInit {
       this.assignmentsServises.updateAssignment(assignment)
         .subscribe({
           next: (response) => {
-            console.log('Correction sauvegardée avec succès');
+            this.snackbarService.showSuccess('Correction sauvegardée avec succès');
             // Recharger la page detail pour voir les changements
-            window.location.reload();
+            setTimeout(() => window.location.reload(), 1000);
           },
           error: (error) => {
             console.error('Erreur lors de la sauvegarde de la correction:', error);
+            this.snackbarService.showError('Erreur lors de la sauvegarde de la correction');
           }
         });
     }

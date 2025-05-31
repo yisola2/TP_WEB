@@ -55,3 +55,26 @@ mat-list-item .mat-icon {
   color: #343a40 !important;
   font-weight: 600;
 }
+
+.populate-button {
+  color: #dc3545 !important;
+  text-decoration: none;
+  font-size: 1em;
+  width: 100%;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 4px;
+  border: 1px solid #dc3545;
+  background-color: transparent;
+}
+
+.populate-button:hover {
+  background-color: #f8d7da;
+  color: #721c24 !important;
+}
+
+.populate-button .mat-icon {
+  margin-right: 8px;
+}

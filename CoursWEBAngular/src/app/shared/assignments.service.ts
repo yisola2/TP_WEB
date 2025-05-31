@@ -100,4 +100,14 @@ export class AssignmentsService {
       })
     );
   }
+
+  populateData(): Observable<any> {
+    const populateURL = "https://assignment-api-xftj.onrender.com/api/populate";
+    return this.http.post<any>(populateURL, {}).pipe(
+      catchError(error => {
+        console.error('Erreur populate:', error);
+        return throwError(() => error);
+      })
+    );
   }
+}

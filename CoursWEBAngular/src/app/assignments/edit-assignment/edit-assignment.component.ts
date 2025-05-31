@@ -11,10 +11,12 @@ import { provideNativeDateAdapter, MatOptionModule } from '@angular/material/cor
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card'; // Ajouté
 import { MatIconModule } from '@angular/material/icon'; // Ajouté
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AssignmentsService } from '../../shared/assignments.service';
 import { MatiereService, Matiere } from '../../shared/matiere.service';
 import { Assignment } from '../assignment.model';
+import { SnackbarService } from '../../shared/snackbar.service';
 
 @Component({
   selector: 'app-edit-assignment',
@@ -30,7 +32,8 @@ import { Assignment } from '../assignment.model';
     MatSelectModule,
     MatOptionModule,
     MatCardModule,    // Ajouté
-    MatIconModule     // Ajouté
+    MatIconModule,     // Ajouté
+    MatSnackBarModule
   ],
   templateUrl: './edit-assignment.component.html',
   styleUrl: './edit-assignment.component.css',
@@ -50,7 +53,8 @@ export class EditAssignmentComponent implements OnInit{
     private assignmentsServises: AssignmentsService,
     private route:ActivatedRoute,
     private router:Router,
-    private matiereService: MatiereService
+    private matiereService: MatiereService,
+    private snackbarService: SnackbarService
   ) {}
 
   get matiereSelectionnee(): Matiere | undefined {
@@ -81,7 +85,7 @@ export class EditAssignmentComponent implements OnInit{
     // Validation de la note
     if (this.note !== null && this.note !== undefined) {
       if (this.note < 0 || this.note > 20) {
-        console.error('La note doit être entre 0 et 20');
+        this.snackbarService.showError('La note doit être comprise entre 0 et 20');
         this.router.navigate(['/assignment', this.assignment._id]);
         return;
       }
@@ -118,7 +122,8 @@ export class EditAssignmentComponent implements OnInit{
     this.assignmentsServises
       .updateAssignment(updateData)
       .subscribe((reponse) => {
-        this.router.navigate(['/assignment', this.assignment!._id]);
+        this.snackbarService.showSuccess('Assignment modifié avec succès');
+        setTimeout(() => this.router.navigate(['/assignment', this.assignment!._id]), 1000);
       });
   }
 }

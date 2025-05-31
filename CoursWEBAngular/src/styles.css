@@ -24,3 +24,44 @@ app-root {
   font-weight: bold;
   color: #FFC107 !important;
 }
+
+/* Styles pour les snackbars */
+.success-snackbar {
+  background-color: #d4edda !important;
+  color: #155724 !important;
+}
+
+.error-snackbar {
+  background-color: #f8d7da !important;
+  color: #721c24 !important;
+}
+
+.warning-snackbar {
+  background-color: #fff3cd !important;
+  color: #856404 !important;
+}
+
+.info-snackbar {
+  background-color: #d1ecf1 !important;
+  color: #0c5460 !important;
+}
+
+.success-snackbar .mat-mdc-snack-bar-action {
+  color: #155724 !important;
+  font-weight: bold;
+}
+
+.error-snackbar .mat-mdc-snack-bar-action {
+  color: #721c24 !important;
+  font-weight: bold;
+}
+
+.warning-snackbar .mat-mdc-snack-bar-action {
+  color: #856404 !important;
+  font-weight: bold;
+}
+
+.info-snackbar .mat-mdc-snack-bar-action {
+  color: #0c5460 !important;
+  font-weight: bold;
+}
