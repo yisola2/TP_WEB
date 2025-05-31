@@ -160,11 +160,23 @@ export class AssignmentDetailComponent implements OnInit {
 
   onSaveCorrection() {
     if (this.assignmentTransmis()) {
-      this.assignmentsServises.updateAssignment(this.assignmentTransmis()!)
+      const assignment = this.assignmentTransmis()!;
+      
+      // Validation de la note
+      if (assignment.note !== undefined && assignment.note !== null) {
+        if (assignment.note < 0 || assignment.note > 20) {
+          console.error('La note doit être entre 0 et 20');
+          window.location.reload();
+          return;
+        }
+      }
+      
+      this.assignmentsServises.updateAssignment(assignment)
         .subscribe({
           next: (response) => {
             console.log('Correction sauvegardée avec succès');
-            this.router.navigate(['/home']);
+            // Recharger la page detail pour voir les changements
+            window.location.reload();
           },
           error: (error) => {
             console.error('Erreur lors de la sauvegarde de la correction:', error);

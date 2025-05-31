@@ -78,24 +78,47 @@ export class EditAssignmentComponent implements OnInit{
     if (!this.assignment) return;
     if (this.assignmentName == '' || this.assignmentDueDate === undefined) return;
     
-    this.assignment.name = this.assignmentName;
-    this.assignment.dueDate = this.assignmentDueDate;
+    // Validation de la note
+    if (this.note !== null && this.note !== undefined) {
+      if (this.note < 0 || this.note > 20) {
+        console.error('La note doit être entre 0 et 20');
+        this.router.navigate(['/assignment', this.assignment._id]);
+        return;
+      }
+    }
+    
+    // Créer un objet avec seulement les champs autorisés
+    const updateData: any = {
+      _id: this.assignment._id,
+      name: this.assignmentName,
+      dueDate: this.assignmentDueDate,
+      submitted: this.assignment.submitted,
+      postedOn: this.assignment.postedOn
+    };
     
     // Utilisation du service pour récupérer la matière complète
     const matiereObj = this.matiereSelectionnee;
-    this.assignment.matiere = matiereObj ? {
+    updateData.matiere = matiereObj ? {
       nom: matiereObj.nom,
       image: matiereObj.image,
       prof: matiereObj.prof
     } : { nom: this.matiereNom };
     
-    this.assignment.note = this.note ?? 0;
-    this.assignment.remarques = this.remarques;
+    // N'ajouter note et remarques QUE si l'assignment est submitted
+    if (this.assignment.submitted) {
+      updateData.note = this.note ?? 0;
+      updateData.remarques = this.remarques;
+    }
+    
+    // Conserver auteur si existant
+    if (this.assignment.auteur) {
+      updateData.auteur = this.assignment.auteur;
+    }
     
     this.assignmentsServises
-      .updateAssignment(this.assignment)
+      .updateAssignment(updateData)
       .subscribe((reponse) => {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/assignment', this.assignment!._id]);
       });
   }
 }
