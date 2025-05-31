@@ -11,17 +11,17 @@ export class SnackbarService {
   showSuccess(message: string, duration: number = 3000) {
     this.snackBar.open(message, '✓', {
       duration: duration,
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
       panelClass: ['success-snackbar']
     });
   }
 
   showError(message: string, duration: number = 5000) {
-    this.snackBar.open(message, '✗', {
+    this.snackBar.open(message, 'X', {
       duration: duration,
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
       panelClass: ['error-snackbar']
     });
   }
@@ -29,8 +29,8 @@ export class SnackbarService {
   showWarning(message: string, duration: number = 4000) {
     this.snackBar.open(message, '⚠', {
       duration: duration,
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
       panelClass: ['warning-snackbar']
     });
   }
@@ -38,8 +38,8 @@ export class SnackbarService {
   showInfo(message: string, duration: number = 3000) {
     this.snackBar.open(message, 'ℹ', {
       duration: duration,
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
       panelClass: ['info-snackbar']
     });
   }

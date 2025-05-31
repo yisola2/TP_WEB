@@ -86,7 +86,6 @@ export class EditAssignmentComponent implements OnInit{
     if (this.note !== null && this.note !== undefined) {
       if (this.note < 0 || this.note > 20) {
         this.snackbarService.showError('La note doit être comprise entre 0 et 20');
-        this.router.navigate(['/assignment', this.assignment._id]);
         return;
       }
     }

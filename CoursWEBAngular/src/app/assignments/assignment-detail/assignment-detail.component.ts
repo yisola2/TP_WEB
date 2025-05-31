@@ -171,8 +171,7 @@ export class AssignmentDetailComponent implements OnInit {
       if (assignment.note !== undefined && assignment.note !== null) {
         if (assignment.note < 0 || assignment.note > 20) {
           this.snackbarService.showError('La note doit être comprise entre 0 et 20');
-          window.location.reload();
-          return;
+          return; 
         }
       }
       
