@@ -201,3 +201,20 @@ td span[appnotsubmitted] mat-icon {
         font-size: 0.8em;
     }
 }
+
+/* Lien désactivé pour le bouton Ajouter */
+.ajouterBtn a.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.ajouterBtn a.disabled button {
+  background-color: #e0e0e0 !important;
+  color: #9e9e9e !important;
+}
+
+.ajouterBtn a.disabled button:hover {
+  background-color: #e0e0e0 !important;
+  box-shadow: none !important;
+}

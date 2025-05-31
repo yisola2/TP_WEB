@@ -1,8 +1,8 @@
 <main class="container">
   <p class="titre">Liste des Devoirs</p>
   <div class="ajouterBtn">
-    <a routerLink="/add">
-      <button mat-flat-button>
+    <a routerLink="/add" [class.disabled]="!isAdmin()">
+      <button mat-flat-button [disabled]="!isAdmin()">
         <mat-icon>add</mat-icon> Ajouter un Devoir
       </button>
     </a>
