@@ -1,9 +1,9 @@
 import {
-  MatDividerModule
-} from "./chunk-27WS45IF.js";
-import {
   SelectionModel
 } from "./chunk-DM5QDHDR.js";
+import {
+  MatDividerModule
+} from "./chunk-27WS45IF.js";
 import {
   NG_VALUE_ACCESSOR
 } from "./chunk-WAIBQ2ZL.js";

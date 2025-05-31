@@ -33,6 +33,7 @@ import { SnackbarService } from '../shared/snackbar.service';
 export class LoginComponent {
   username = '';
   password = '';
+  error = '';
 
   constructor(
     private authService: AuthService,
@@ -41,7 +42,10 @@ export class LoginComponent {
   ) {}
 
   onSubmit() {
+    this.error = ''; // Clear any previous errors
+    
     if (!this.username || !this.password) {
+      this.error = 'Veuillez remplir tous les champs.';
       this.snackbarService.showError('Veuillez remplir tous les champs.');
       return;
     }
@@ -50,6 +54,7 @@ export class LoginComponent {
         if (this.authService.getToken()) {
           this.router.navigate(['/']);
         } else {
+          this.error = 'Échec de la connexion. Réponse inattendue.';
           this.snackbarService.showError('Échec de la connexion. Réponse inattendue.');
         }
       },
@@ -57,6 +62,7 @@ export class LoginComponent {
         const errorMessage = httpErrorResponse.error?.error ||
                              httpErrorResponse.error?.message ||
                              'Nom d\'utilisateur ou mot de passe incorrect.';
+        this.error = errorMessage;
         this.snackbarService.showError(errorMessage);
       }
     });
