@@ -8,8 +8,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AuthService } from '../shared/auth.service';
+import { SnackbarService } from '../shared/snackbar.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +24,8 @@ import { AuthService } from '../shared/auth.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
@@ -30,19 +33,31 @@ import { AuthService } from '../shared/auth.service';
 export class LoginComponent {
   username = '';
   password = '';
-  error = '';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private snackbarService: SnackbarService
+  ) {}
 
   onSubmit() {
     if (!this.username || !this.password) {
-      this.error = 'Veuillez remplir tous les champs.';
+      this.snackbarService.showError('Veuillez remplir tous les champs.');
       return;
     }
-    this.auth.login(this.username, this.password).subscribe({
-      next: () => this.router.navigate(['/']),
-      error: err => {
-        this.error = err.error?.message || err.error?.error || 'Nom d\'utilisateur ou mot de passe incorrect.';
+    this.authService.login(this.username, this.password).subscribe({
+      next: (response) => {
+        if (this.authService.getToken()) {
+          this.router.navigate(['/']);
+        } else {
+          this.snackbarService.showError('Échec de la connexion. Réponse inattendue.');
+        }
+      },
+      error: (httpErrorResponse) => {
+        const errorMessage = httpErrorResponse.error?.error ||
+                             httpErrorResponse.error?.message ||
+                             'Nom d\'utilisateur ou mot de passe incorrect.';
+        this.snackbarService.showError(errorMessage);
       }
     });
   }

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +25,8 @@ export class AuthService {
           this.userRole.next(res.user?.role || 'user');
         }
       }),
-      catchError(error => {
-        console.error('Login error:', error);
-        return of(null);
+      catchError((error: HttpErrorResponse) => {
+        return throwError(() => error);
       })
     );
   }
@@ -67,24 +65,21 @@ export class AuthService {
     return !!token && token.length > 0;
   }
 
-  // Helper method to check if token is valid (you can expand this)
   isTokenValid(): boolean {
     const token = this.getToken();
     if (!token) return false;
-    
+
     try {
-      // Basic check - you could decode JWT and check expiration
       return token.length > 10;
     } catch {
       return false;
     }
   }
 
-  // Récupérer les informations de l'utilisateur connecté
   getCurrentUser(): { username: string; role: string } | null {
     const username = localStorage.getItem('username');
     const role = this.getRole();
-    
+
     if (username && role) {
       return { username, role };
     }
