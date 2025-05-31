@@ -164,6 +164,7 @@ export class AssignmentDetailComponent implements OnInit {
         .subscribe({
           next: (response) => {
             console.log('Correction sauvegardée avec succès');
+            this.router.navigate(['/home']);
           },
           error: (error) => {
             console.error('Erreur lors de la sauvegarde de la correction:', error);
