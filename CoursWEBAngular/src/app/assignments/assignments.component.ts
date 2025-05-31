@@ -5,6 +5,7 @@ import { Assignment } from './assignment.model';
 import { AssignmentsService } from '../shared/assignments.service';
 import { MatiereService, Matiere } from '../shared/matiere.service';
 import { AuthService } from '../shared/auth.service';
+import { SnackbarService } from '../shared/snackbar.service';
 
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +27,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { NotSubmittedDirective } from '../shared/not-submitted.directive';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -50,7 +52,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatSlideToggleModule,
     MatPaginatorModule,
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule
     //AssignmentDetailComponent
 ],
   providers: [],
@@ -74,7 +77,8 @@ export class AssignmentsComponent implements OnInit {
   constructor (
     private assignmentsService:AssignmentsService, 
     private authService: AuthService,
-    private matiereService: MatiereService
+    private matiereService: MatiereService,
+    private snackbarService: SnackbarService
   ) {}
 
   assignmentDueDate: any;
@@ -108,12 +112,18 @@ export class AssignmentsComponent implements OnInit {
   
   getAssignments(page: number = 1) {
     this.assignmentsService.getAssignmentsWithPagination(page, this.pageSize)
-      .subscribe(result => {
-        console.log('Pagination result:', result);
-        const rawAssignments = result.assignments || [];
-        // Enrichir les assignments avec les données des matières
-        this.assignments = this.enrichAssignmentsWithMatiereData(rawAssignments);
-        this.totalAssignments = result.paginator?.totalAssignments || 0;
+      .subscribe({
+        next: (result) => {
+          console.log('Pagination result:', result);
+          const rawAssignments = result.assignments || [];
+          // Enrichir les assignments avec les données des matières
+          this.assignments = this.enrichAssignmentsWithMatiereData(rawAssignments);
+          this.totalAssignments = result.paginator?.totalAssignments || 0;
+        },
+        error: (error) => {
+          console.error('Erreur lors du chargement des assignments:', error);
+          this.snackbarService.showError('Erreur lors du chargement des assignments');
+        }
       });
   }
 

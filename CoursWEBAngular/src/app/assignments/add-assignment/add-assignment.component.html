@@ -21,14 +21,14 @@
                 <mat-label>Nom du devoir</mat-label>
                 <input matInput formControlName="nom" placeholder="Ex: TP1 - Introduction aux bases de données">
                 <mat-icon matSuffix>assignment</mat-icon>
-              </mat-form-field>
+    </mat-form-field>
 
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Date limite de rendu</mat-label>
                 <input matInput [matDatepicker]="picker1" formControlName="dateDeRendu">
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
-              </mat-form-field>
+    </mat-form-field>
             </div>
 
             <div class="step-actions">
@@ -48,14 +48,14 @@
             
             <div class="step-content">
               <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Matière</mat-label>
+        <mat-label>Matière</mat-label>
                 <mat-select formControlName="matiereNom">
                   <mat-option *ngFor="let matiere of matieres" [value]="matiere.nom">
                     {{matiere.nom}}
                   </mat-option>
-                </mat-select>
+        </mat-select>
                 <mat-icon matSuffix>school</mat-icon>
-              </mat-form-field>
+    </mat-form-field>
 
               <!-- Prévisualisation de la matière sélectionnée -->
               <div *ngIf="matiereSelectionnee" class="matiere-preview">
@@ -73,8 +73,8 @@
                   </div>
                 </div>
               </div>
-            </div>
-
+    </div>
+    
             <div class="step-actions">
               <button mat-stroked-button matStepperPrevious>
                 <mat-icon>navigate_before</mat-icon>
@@ -84,9 +84,9 @@
                       [disabled]="firstFormGroup.invalid || secondFormGroup.invalid">
                 <mat-icon>save</mat-icon>
                 Créer le devoir
-              </button>
+    </button>
             </div>
-          </form>
+</form>
         </mat-step>
 
       </mat-stepper>
