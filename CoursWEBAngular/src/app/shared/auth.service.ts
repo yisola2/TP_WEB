@@ -21,6 +21,7 @@ export class AuthService {
         if (res && res.token) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('role', res.user?.role || 'user');
+          localStorage.setItem('username', res.user?.username || username);
           this.loggedIn.next(true);
           this.userRole.next(res.user?.role || 'user');
         }
@@ -39,6 +40,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('username');
     this.loggedIn.next(false);
     this.userRole.next(null);
     this.router.navigate(['/login']);
@@ -76,5 +78,16 @@ export class AuthService {
     } catch {
       return false;
     }
+  }
+
+  // Récupérer les informations de l'utilisateur connecté
+  getCurrentUser(): { username: string; role: string } | null {
+    const username = localStorage.getItem('username');
+    const role = this.getRole();
+    
+    if (username && role) {
+      return { username, role };
+    }
+    return null;
   }
 }

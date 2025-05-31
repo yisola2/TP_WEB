@@ -88,23 +88,55 @@ export class AssignmentDetailComponent implements OnInit {
 
   onAssignmentRendu(){
     if (this.assignmentTransmis()) {
+      const currentUser = this.authService.getCurrentUser();
+      console.log('Current user:', currentUser);
+      
+      const avatarUrl = this.generateUserAvatar(currentUser?.username || 'anonymous');
+      console.log('Generated avatar URL:', avatarUrl);
+      
+      let updatedAssignment: Assignment | null = null;
+      
       this.assignmentTransmis.update(assignment => {
         if (assignment) {
-          return {...assignment, submitted: true};
+          updatedAssignment = {
+            ...assignment, 
+            submitted: true,
+            auteur: {
+              nom: currentUser?.username || 'Utilisateur inconnu',
+              photo: avatarUrl
+            }
+          };
+          console.log('Updated assignment:', updatedAssignment);
+          return updatedAssignment;
         }
         return assignment;
       });
 
-    this.assignmentsServises.updateAssignment(this.assignmentTransmis()!)
-      .subscribe({
-        next: (response) => {
-          this.router.navigate(['/home']);
-        },
-        error: (error) => {
-          console.error('Error updating assignment:', error);
-        }
-      });
+      if (updatedAssignment) {
+        console.log('Sending to backend:', updatedAssignment);
+        this.assignmentsServises.updateAssignment(updatedAssignment)
+          .subscribe({
+            next: (response) => {
+              console.log('Devoir marqué comme rendu avec succès', response);
+              this.router.navigate(['/home']);
+            },
+            error: (error) => {
+              console.error('Error updating assignment:', error);
+            }
+          });
+      }
     }
+  }
+
+  // Génère un avatar basé sur le username (stable - même avatar pour même user)
+  private generateUserAvatar(username: string): string {
+    // Utilise le username pour générer un hash stable
+    let hash = 0;
+    for (let i = 0; i < username.length; i++) {
+      hash = username.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const avatarId = Math.abs(hash % 1000) + 1; // 1-1000
+    return `https://robohash.org/${avatarId}.png?size=150x150&set=set1`;
   }
 
   onDelete(){

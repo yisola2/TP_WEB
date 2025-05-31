@@ -79,7 +79,7 @@ export class AssignmentsComponent implements OnInit {
 
   assignmentDueDate: any;
 
-  displayedColumns: string[] = ['name', 'date', 'postedOn', 'matiere', 'auteur', 'note', 'remarques', 'submitted', 'actions'];
+  displayedColumns: string[] = ['name', 'auteur', 'photoEleve', 'matiere', 'note', 'prof', 'remarques', 'date', 'postedOn', 'statut', 'actions'];
 
   ngOnInit(): void {
     this.getAssignments(1);
