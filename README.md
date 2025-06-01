@@ -64,7 +64,7 @@ ng serve
 
 L'app sera dispo sur `http://localhost:4200`
 
-**Application déployée :** [lien]`https://assignment-front-oone.onrender.com/home`
+**Application déployée :** [lien Render](https://assignment-front-oone.onrender.com/home)
 
 ## Comptes de test
 
