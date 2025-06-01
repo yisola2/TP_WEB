@@ -1,98 +1,181 @@
-# Assignment Management Application
+# Assignment App
 
-A simple web application built with Angular for managing academic assignments. This app allows users to create, view, edit, and delete assignments with role-based access control.
+Le projet d'application de gestion d'assignments pour le cours de Web M1 Informatique. C'est une app Angular avec un backend Node.js/Express et MongoDB.
 
-## Features
+Yassin Es Saim - Malik Moussa
 
-- **Assignment Management**: Create, view, edit, and delete assignments
-- **Due Date Tracking**: Keep track of assignment deadlines with a visual calendar
-- **Status Monitoring**: Visual indicators for submitted and non-submitted assignments
-- **User Authentication**: Role-based access (admin/user) with different permissions
-- **Responsive Design**: Material Design interface that works on all devices
+## Fonctionnalités
 
-## Prerequisites
+### Gestion des assignments
+- Créer, voir, modifier et supprimer des assignments
+- Interface avec un stepper Material Design pour la création
+- Voir les détails complets de chaque assignment
+- Suivre qui a rendu ou pas
 
-- Node.js
-- npm 
-- Angular CLI
+### Système de matières
+Implémenté avec 6 matières fixes avec leurs profs associés
+
+### Comment ça marche
+1. **Le prof** crée l'assignment (nom, date limite, matière)
+2. **L'étudiant** clique simplement sur "Marquer comme rendu" - son nom d'utilisateur et un avatar généré automatiquement sont ajoutés
+3. **Le prof** peut noter et ajouter des commentaires seulement si le devoir a été rendu
+
+### Authentification
+- Système de login avec rôles admin/user
+- **Note importante :** Pour créer un compte administrateur, il faut utiliser l'API directement (via Postman ou curl) car seule l'inscription d'un user (élève) est disponible dans l'interface
+- Protection des routes selon les permissions
+- Les admins peuvent tout faire, les users peuvent juste consulter et rendre
+
+### Interface
+- Design Material moderne
+- Navigation avec sidebar (si admin : peut peupler la base de données)
+- Badges colorés pour les statuts
+- Images circulaires pour les photos
+- Images des matières
+- Notifications avec snackbar
+- Responsive design
+
+## Technologies utilisées
+
+**Frontend :**
+- Angular 18
+- Angular Material
+- TypeScript
+- RxJS
+
+**Backend :**
+- Node.js & Express
+- MongoDB avec Mongoose
+- API hébergée sur Render ([voir le README du backend](https://github.com/yisola2/assignment_api.git))
 
 ## Installation
 
-1. Clone the repository:
-   ```bash
-   git clone <repo_link>
-   cd CoursWEBAngular
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-   ```bash
-   ng serve
-   ```
-
-4. Open your browser and navigate to `http://localhost:4200`
-
-## Project Structure
-
-```
-src/
-├── app/
-│   ├── assignments/                # Assignment components
-│   │   ├── add-assignment/         # Add new assignments
-│   │   ├── assignment-detail/      # View assignment details
-│   │   ├── edit-assignment/        # Edit existing assignments
-│   │   ├── assignment.model.ts     
-│   │   └── assignments.component.ts
-│   ├── login/                      # Authentication components
-│   ├── shared/                     # Shared services and directives
-│   │   ├── auth.service.ts         # Authentication logic
-│   │   ├── auth.guard.ts           # Route protection
-│   │   ├── assignments.service.ts 
-│   │   ├── logging.service.ts      # Logging functionality
-│   │   ├── submitted.directive.ts  # Visual styling for submitted
-│   │   └── not-submitted.directive.ts # Visual styling for not submitted
-│   ├── app.component.ts             # App root component
-│   ├── app.routes.ts               # App routing configuration
-│   └── app.config.ts               # App configuration
-└── ...
+```bash
+git clone <https://github.com/yisola2/TP_WEB.git>
+cd webCoursAngular/CoursWEBAngular
+npm install
+ng serve
 ```
 
-## Usage
+L'app sera dispo sur `http://localhost:4200`
 
-### Login Credentials
+## Comptes de test
 
-The application comes with two predefined users:
-- **Admin**: login: `admin`, password: `azerty`
-- **Regular User**: login: `user`, password: `azerty`
+On a créé deux comptes pour tester :
 
-### Main Functionality
+**Admin :**
+- Login : `admin1` 
+- Password : `azerty`
+- Peut tout faire (création, modification, suppression, notation)
 
-1. **View Assignments**: The home page displays all assignments with their submission status
-2. **Add Assignment**: Click "Add Assignment" to create a new assignment
-3. **View Details**: Click on an assignment to see its details
-4. **Edit Assignment**: Admin users can edit assignments by clicking the "Edit" button
-5. **Delete Assignment**: Admin users can delete assignments by clicking the "Delete" button
-6. **Mark as Submitted**: Users can mark assignments as submitted
+**User normal :**
+- Login : `user`
+- Password : `azerty` 
+- Peut juste voir et rendre les assignments
 
-## Role-Based Access
+## Structure du code
 
-- **Admin Users**: Have full access to create, read, update, and delete assignments
-- **Regular Users**: Can view assignments and mark them as submitted, but cannot edit or delete them
+```
+src/app/
+├── assignments/
+│   ├── add-assignment/          # Création avec stepper
+│   ├── assignment-detail/       # Page de détail
+│   ├── edit-assignment/         # Modification
+│   ├── assignments.component.*  # Liste principale
+│   └── assignment.model.ts      # Le modèle TypeScript
+├── login/                       # Page de connexion
+├── register/                    # Page d'inscription  
+├── shared/                      # Tous nos services et utilitaires
+│   ├── assignments.service.ts   # CRUD des assignments
+│   ├── auth.service.ts          # Gestion de l'auth
+│   ├── matiere.service.ts       # Les matières fixes
+│   ├── snackbar.service.ts      # Notifications (success, error, etc.)
+│   ├── logging.service.ts       # Pour les logs
+│   ├── auth.guard.ts            # Protection des routes
+│   ├── admin.guard.ts           # Routes admin uniquement
+│   ├── auth.interceptor.ts      # Intercepteur HTTP
+│   └── *.directive.ts           # Directives pour le style
+└── app.*                        # Composant principal et config
+```
 
-### Key Components
+## API Backend
 
-- **AssignmentsComponent**: Displays the list of all assignments
-- **AddAssignmentComponent**: Provides a form to create new assignments
-- **AssignmentDetailComponent**: Shows detailed information for a specific assignment
-- **EditAssignmentComponent**: Allows editing existing assignments
-- **LoginComponent**: Handles user authentication
+### Assignments
+- `GET /api/assignments` → Tous les assignments
+- `GET /api/assignments?page=1&limit=10` → Avec pagination
+- `POST /api/assignments` → Créer un assignment
+- `GET /api/assignments/:id` → Un assignment spécifique
+- `PUT /api/assignments/:id` → Modifier
+- `DELETE /api/assignments/:id` → Supprimer
+- `POST /api/populate` → Remplir avec des données de test
 
-### Key Services
+### Auth
+- `POST /api/auth/login` → Se connecter
+- `POST /api/auth/register` → S'inscrire (user normal uniquement)
 
-- **AssignmentsService**: Manages assignment data operations
-- **AuthService**: Handles authentication and authorization
-- **LoggingService**: Provides logging functionality
+## Le modèle Assignment
+
+Voici le modèle utilisé dans l'application :
+
+```typescript
+export class Assignment {
+    _id?: string;                    // ID MongoDB
+    id!: number;                     // ID numérique
+    name!: string;                   // Nom de l'assignment
+    postedOn?: Date | string;        // Date de publication
+    dueDate?: Date;                  // Date limite
+    submitted!: boolean;             // Rendu ou pas
+
+    // Propriétés liées à la soumission
+    auteur!: { 
+        nom: string, 
+        photo?: string 
+    };
+    
+    // Propriétés de la matière
+    matiere!: { 
+        nom: string, 
+        image?: string, 
+        prof?: { 
+            nom: string, 
+            photo?: string 
+        } 
+    };
+    
+    // Notation (si rendu)
+    note!: number;                   // Note sur 20
+    remarques?: string;              // Commentaires du prof
+}
+```
+
+## Features de l'interface
+
+### Visuellement
+- Tableau Material avec tri et pagination
+- Badges colorés selon les statuts
+- Photos circulaires pour les étudiants et profs
+- Images des matières
+- Stepper en 2 étapes pour créer un assignment
+- Sidebar de navigation avec option "Populate DB" pour les admins
+- Notifications snackbar (4 types : success, error, warning, info)
+
+### Sécurité
+- Routes protégées selon le rôle
+- Boutons cachés si pas les droits
+- Messages d'erreur via les snackbars
+- Intercepteur pour l'auth HTTP
+
+## Quelques trucs à savoir (même si déjà écrit plus haut ou bien dans le README du backend)
+
+- Les images des profs/matières sont des URLs fixes dans le service
+- La pagination fonctionne côté serveur
+- Le backend est déployé sur Render (voir son README pour plus de détails)
+- Pour créer un admin : utiliser Postman/curl sur l'endpoint register avec `role: "admin"`
+- Les assignments ne peuvent être notés que s'ils ont été rendus (submitted = true)
+- La base MongoDB est gérée par le backend avec une structure automatique via Mongoose
+- Les données de test sont générées via Mockaroo
+
+---
+
+
+
