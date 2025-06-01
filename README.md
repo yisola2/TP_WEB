@@ -46,7 +46,7 @@ Implémenté avec 6 matières fixes avec leurs profs associés
 **Backend :**
 - Node.js & Express
 - MongoDB avec Mongoose
-- API hébergée sur Render ([voir le README du backend](https://github.com/yisola2/assignment_api.git))
+- API hébergée sur Render : `https://assignment-api-r5oo.onrender.com` ([voir le README du backend](https://github.com/yisola2/assignment_api.git))
 
 **Services externes :**
 - Unsplash pour les images des matières et professeurs
@@ -64,7 +64,7 @@ ng serve
 
 L'app sera dispo sur `http://localhost:4200`
 
-**Application déployée :** `https://assignment-front-oone.onrender.com/home`
+**Application déployée :** [lien]`https://assignment-front-oone.onrender.com/home`
 
 ## Comptes de test
 
@@ -177,11 +177,10 @@ export class Assignment {
 - Les images des profs/matières sont des URLs fixes dans le service (Unsplash)
 - Les avatars d'étudiants sont générés automatiquement lors de la soumission
 - La pagination fonctionne côté serveur
-- Le backend est déployé sur Render (voir son README pour plus de détails)
 - Pour créer un admin : utiliser Postman/curl sur l'endpoint register avec `role: "admin"`
 - Les assignments ne peuvent être notés que s'ils ont été rendus (submitted = true)
-- La base MongoDB est gérée par le backend avec une structure automatique via Mongoose
 - Les données de test sont générées via Mockaroo
+- **Pour plus de détails sur l'API, la structure des données et le déploiement :** voir le [README du backend](https://github.com/yisola2/assignment_api.git)
 
 ---
 
