@@ -4,6 +4,8 @@ Le projet d'application de gestion d'assignments pour le cours de Web M1 Informa
 
 Yassin Es Saim - Malik Moussa
 
+**Application déployée :** [lien Render](https://assignment-front-oone.onrender.com/home)
+
 ## Fonctionnalités
 
 ### Gestion des assignments
@@ -64,7 +66,6 @@ ng serve
 
 L'app sera dispo sur `http://localhost:4200`
 
-**Application déployée :** [lien Render](https://assignment-front-oone.onrender.com/home)
 
 ## Comptes de test
 
